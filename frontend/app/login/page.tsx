@@ -108,13 +108,7 @@ export default function LoginPage() {
                             </svg>
                             Random Forest · 84.2% test acc
                         </div>
-                        <div className={styles.floatCard} style={{ bottom: '18%', right: '-12px' }}>
-                            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                            Local-first · HIPAA-friendly
-                        </div>
+
                     </div>
                 </div>
 
