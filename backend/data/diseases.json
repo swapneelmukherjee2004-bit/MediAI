@@ -1,0 +1,482 @@
+{
+  "diseases": {
+    "Fungal infection": {
+      "description": "A fungal infection occurs when a fungus invades a part of the body and the immune system cannot handle it.",
+      "severity": "mild",
+      "body_system": "Skin",
+      "precautions": ["Keep skin dry and clean", "Use antifungal powder", "Avoid sharing personal items", "Wear breathable clothing"],
+      "medicines": [
+        {"name": "Clotrimazole", "type": "Topical Antifungal", "dosage": "Apply 1% cream twice daily for 2-4 weeks", "notes": "Clean and dry the affected area before application"},
+        {"name": "Fluconazole", "type": "Oral Antifungal", "dosage": "150mg single dose or 50mg daily for 2 weeks", "notes": "Take with or without food. Avoid alcohol."},
+        {"name": "Terbinafine", "type": "Oral Antifungal", "dosage": "250mg once daily for 2-6 weeks", "notes": "Monitor liver function for prolonged use"}
+      ],
+      "lifestyle": ["Keep affected areas clean and dry", "Change socks and underwear daily", "Avoid tight-fitting footwear", "Don't walk barefoot in public areas"]
+    },
+    "Allergy": {
+      "description": "An allergy is an immune system response to a foreign substance that is not harmful to most people. Symptoms can range from mild to severe.",
+      "severity": "mild",
+      "body_system": "Immune System",
+      "precautions": ["Avoid known allergens", "Carry emergency medication", "Wear medical alert bracelet", "Monitor symptoms closely"],
+      "medicines": [
+        {"name": "Cetirizine", "type": "Antihistamine", "dosage": "10mg once daily", "notes": "May cause drowsiness. Avoid alcohol."},
+        {"name": "Loratadine", "type": "Non-drowsy Antihistamine", "dosage": "10mg once daily", "notes": "Preferred for daytime use"},
+        {"name": "Fexofenadine", "type": "Antihistamine", "dosage": "180mg once daily", "notes": "Non-sedating antihistamine"},
+        {"name": "Montelukast", "type": "Leukotriene Inhibitor", "dosage": "10mg once daily at night", "notes": "For allergy and asthma combined treatment"}
+      ],
+      "lifestyle": ["Identify and avoid allergens", "Keep windows closed during high pollen season", "Use air purifiers", "Shower after outdoor activities"]
+    },
+    "GERD": {
+      "description": "Gastroesophageal reflux disease (GERD) is a chronic digestive disorder caused by stomach acid frequently flowing back into the esophagus.",
+      "severity": "moderate",
+      "body_system": "Digestive",
+      "precautions": ["Avoid spicy foods", "Do not lie down immediately after eating", "Elevate head while sleeping", "Maintain healthy weight"],
+      "medicines": [
+        {"name": "Omeprazole", "type": "Proton Pump Inhibitor", "dosage": "20-40mg once daily before breakfast", "notes": "Take 30 minutes before meals for best effect"},
+        {"name": "Pantoprazole", "type": "Proton Pump Inhibitor", "dosage": "40mg once or twice daily", "notes": "May take 1-4 days to feel full effect"},
+        {"name": "Ranitidine", "type": "H2 Blocker", "dosage": "150mg twice daily", "notes": "Take 30-60 minutes before meals"},
+        {"name": "Antacids (Gaviscon)", "type": "Antacid", "dosage": "10-20ml or 2-4 tablets after meals", "notes": "For immediate symptom relief"}
+      ],
+      "lifestyle": ["Eat smaller, more frequent meals", "Avoid caffeine and alcohol", "Maintain healthy weight", "Avoid eating 3 hours before bedtime"]
+    },
+    "Chronic cholestasis": {
+      "description": "Chronic cholestasis is a condition where bile flow from the liver is reduced or blocked for prolonged periods, leading to bile buildup.",
+      "severity": "severe",
+      "body_system": "Liver",
+      "precautions": ["Regular liver function tests", "Avoid alcohol completely", "Low-fat diet", "Monitor bilirubin levels"],
+      "medicines": [
+        {"name": "Ursodeoxycholic Acid", "type": "Bile Acid", "dosage": "13-15mg/kg/day in 2-3 divided doses", "notes": "Take with meals to minimize gastrointestinal effects"},
+        {"name": "Cholestyramine", "type": "Bile Acid Sequestrant", "dosage": "4g 1-6 times daily", "notes": "Mix with water or juice. Take other medications 1 hour before."},
+        {"name": "Vitamin K supplement", "type": "Vitamin", "dosage": "10mg/day orally or 1-10mg/week IM", "notes": "Monitor prothrombin time regularly"}
+      ],
+      "lifestyle": ["Low-fat diet", "Avoid alcohol completely", "Take fat-soluble vitamin supplements", "Regular monitoring by gastroenterologist"]
+    },
+    "Drug Reaction": {
+      "description": "An adverse drug reaction is an unintended, harmful reaction to a medication taken at a normal dose.",
+      "severity": "moderate",
+      "body_system": "Immune System",
+      "precautions": ["Stop the causative drug immediately", "Inform doctor about all medications", "Carry allergy card", "Avoid self-medication"],
+      "medicines": [
+        {"name": "Diphenhydramine", "type": "Antihistamine", "dosage": "25-50mg every 4-6 hours", "notes": "For mild reactions. Causes significant drowsiness."},
+        {"name": "Prednisolone", "type": "Corticosteroid", "dosage": "40-60mg/day, tapered over 1-2 weeks", "notes": "For moderate to severe reactions"},
+        {"name": "Epinephrine (EpiPen)", "type": "Emergency Medication", "dosage": "0.3-0.5mg IM (auto-injector)", "notes": "For anaphylaxis ONLY. Seek emergency care immediately after use."}
+      ],
+      "lifestyle": ["Keep a list of all medications and allergies", "Inform all healthcare providers", "Wear medical alert bracelet", "Read all prescription labels carefully"]
+    },
+    "Peptic ulcer disease": {
+      "description": "Peptic ulcer disease involves painful sores (ulcers) in the lining of the stomach, small intestine, or esophagus.",
+      "severity": "moderate",
+      "body_system": "Digestive",
+      "precautions": ["Avoid NSAIDs", "Quit smoking", "Avoid spicy and acidic foods", "Eat regular meals"],
+      "medicines": [
+        {"name": "Omeprazole", "type": "Proton Pump Inhibitor", "dosage": "20-40mg twice daily", "notes": "Take before meals. Continue for full prescribed course."},
+        {"name": "Amoxicillin + Clarithromycin", "type": "Antibiotics (H. pylori eradication)", "dosage": "Amoxicillin 1g + Clarithromycin 500mg twice daily for 14 days", "notes": "Triple therapy with PPI for H. pylori eradication"},
+        {"name": "Sucralfate", "type": "Mucosal Protective Agent", "dosage": "1g four times daily before meals", "notes": "Take on an empty stomach. Avoid antacids within 30 minutes."}
+      ],
+      "lifestyle": ["Eat small, regular meals", "Avoid alcohol and smoking", "Reduce stress", "Limit NSAID and aspirin use"]
+    },
+    "AIDS": {
+      "description": "Acquired immunodeficiency syndrome (AIDS) is a chronic, life-threatening condition caused by HIV that damages the immune system.",
+      "severity": "severe",
+      "body_system": "Immune System",
+      "precautions": ["Strict adherence to ART", "Practice safe sex", "Avoid needle sharing", "Regular CD4 count monitoring"],
+      "medicines": [
+        {"name": "Tenofovir + Emtricitabine + Efavirenz", "type": "Antiretroviral (ART)", "dosage": "One tablet once daily", "notes": "Single-tablet regimen. Take at bedtime to reduce CNS side effects."},
+        {"name": "Bictegravir + FTC + TAF", "type": "Antiretroviral (ART)", "dosage": "One tablet once daily with food", "notes": "Modern first-line regimen with minimal side effects"},
+        {"name": "Trimethoprim-Sulfamethoxazole", "type": "Prophylactic Antibiotic", "dosage": "One DS tablet daily when CD4 < 200 cells/μL", "notes": "Prevents opportunistic infections like PCP"}
+      ],
+      "lifestyle": ["Take medications exactly as prescribed", "Maintain a healthy diet", "Avoid tobacco and excessive alcohol", "Regular medical check-ups"]
+    },
+    "Diabetes": {
+      "description": "Diabetes is a chronic condition that affects how the body processes blood sugar (glucose), either through insufficient insulin production or insulin resistance.",
+      "severity": "severe",
+      "body_system": "Endocrine",
+      "precautions": ["Monitor blood glucose regularly", "Follow prescribed diet", "Exercise consistently", "Inspect feet daily"],
+      "medicines": [
+        {"name": "Metformin", "type": "Biguanide (First-line)", "dosage": "500-2000mg daily in divided doses with meals", "notes": "Start low, increase gradually. Avoid in kidney disease."},
+        {"name": "Glipizide", "type": "Sulfonylurea", "dosage": "5-20mg/day before meals", "notes": "Monitor for hypoglycemia. Take 30 min before meals."},
+        {"name": "Insulin (Insulin Glargine)", "type": "Long-acting Insulin", "dosage": "10-40 units subcutaneously once daily", "notes": "Dosage adjusted based on blood glucose monitoring"},
+        {"name": "Sitagliptin", "type": "DPP-4 Inhibitor", "dosage": "100mg once daily", "notes": "Kidney-dose adjustment required"}
+      ],
+      "lifestyle": ["Follow a low-glycemic diet", "Exercise 150 minutes/week", "Monitor blood sugar daily", "Maintain healthy body weight"]
+    },
+    "Gastroenteritis": {
+      "description": "Gastroenteritis is inflammation of the stomach and intestines, typically caused by bacteria or viral infection, resulting in diarrhea, vomiting and cramping.",
+      "severity": "moderate",
+      "body_system": "Digestive",
+      "precautions": ["Stay hydrated", "Practice proper hand hygiene", "Avoid contaminated food", "Rest adequately"],
+      "medicines": [
+        {"name": "Oral Rehydration Salts (ORS)", "type": "Rehydration", "dosage": "200-400ml after every loose stool", "notes": "Most important treatment. Prevent dehydration."},
+        {"name": "Loperamide", "type": "Antidiarrheal", "dosage": "4mg initially, then 2mg after each loose stool (max 16mg/day)", "notes": "Do not use if fever or bloody stool present"},
+        {"name": "Ondansetron", "type": "Antiemetic", "dosage": "4-8mg every 8 hours", "notes": "For controlling nausea and vomiting"}
+      ],
+      "lifestyle": ["Drink clear fluids", "Eat bland foods (BRAT diet)", "Rest and avoid strenuous activity", "Practice good hand hygiene"]
+    },
+    "Bronchial Asthma": {
+      "description": "Asthma is a condition that causes the airways to swell, narrow, and produce extra mucus, making it difficult to breathe.",
+      "severity": "moderate",
+      "body_system": "Respiratory",
+      "precautions": ["Avoid triggers (dust, pollen)", "Always carry rescue inhaler", "Monitor peak flow", "Get flu vaccination"],
+      "medicines": [
+        {"name": "Salbutamol (Albuterol)", "type": "Short-acting Bronchodilator (Rescue)", "dosage": "2 puffs (100mcg each) every 4-6 hours as needed", "notes": "Rescue inhaler for acute symptoms. Use spacer for best effect."},
+        {"name": "Budesonide", "type": "Inhaled Corticosteroid (Controller)", "dosage": "200-400mcg twice daily", "notes": "Rinse mouth after use to prevent oral thrush"},
+        {"name": "Montelukast", "type": "Leukotriene Modifier", "dosage": "10mg once daily at night", "notes": "Adjunct therapy. Not for acute attacks."},
+        {"name": "Salmeterol + Fluticasone", "type": "LABA + ICS Combined", "dosage": "50/250mcg twice daily inhaled", "notes": "For moderate-severe persistent asthma"}
+      ],
+      "lifestyle": ["Identify and avoid triggers", "Exercise with doctor-approved warm-up routine", "Maintain healthy weight", "Keep indoor air clean"]
+    },
+    "Hypertension": {
+      "description": "Hypertension (high blood pressure) is a condition where blood pressure in the arteries is persistently elevated, a major risk factor for heart disease and stroke.",
+      "severity": "severe",
+      "body_system": "Cardiovascular",
+      "precautions": ["Monitor BP daily", "Reduce sodium intake", "Avoid alcohol", "Take medications consistently"],
+      "medicines": [
+        {"name": "Amlodipine", "type": "Calcium Channel Blocker", "dosage": "5-10mg once daily", "notes": "May cause ankle swelling. Take at same time each day."},
+        {"name": "Lisinopril", "type": "ACE Inhibitor", "dosage": "10-40mg once daily", "notes": "Monitor potassium levels. Avoid in pregnancy."},
+        {"name": "Losartan", "type": "ARB", "dosage": "50-100mg once daily", "notes": "Monitor kidney function and electrolytes"},
+        {"name": "Hydrochlorothiazide", "type": "Thiazide Diuretic", "dosage": "12.5-25mg once daily in the morning", "notes": "Monitor electrolytes. Take in morning to avoid nocturia."}
+      ],
+      "lifestyle": ["DASH diet (low sodium, high potassium)", "Exercise 30 minutes most days", "Limit alcohol consumption", "Quit smoking"]
+    },
+    "Migraine": {
+      "description": "A migraine is a severe headache often accompanied by nausea, vomiting, and extreme sensitivity to light and sound.",
+      "severity": "moderate",
+      "body_system": "Neurological",
+      "precautions": ["Identify and avoid triggers", "Maintain regular sleep schedule", "Manage stress", "Avoid caffeine excess"],
+      "medicines": [
+        {"name": "Sumatriptan", "type": "Triptan (Acute)", "dosage": "50-100mg at onset, repeat after 2h if needed (max 200mg/day)", "notes": "Take at first sign of migraine. Not for prevention."},
+        {"name": "Ibuprofen", "type": "NSAID (Acute)", "dosage": "400-800mg at onset", "notes": "Most effective when taken early. Take with food."},
+        {"name": "Propranolol", "type": "Beta-Blocker (Preventive)", "dosage": "80-240mg daily in divided doses", "notes": "For migraine prevention, not acute treatment"},
+        {"name": "Topiramate", "type": "Anticonvulsant (Preventive)", "dosage": "25-100mg daily", "notes": "Gradual dose increase to minimize side effects"}
+      ],
+      "lifestyle": ["Keep a headache diary", "Maintain consistent sleep schedule", "Avoid known triggers", "Practice relaxation techniques"]
+    },
+    "Cervical spondylosis": {
+      "description": "Cervical spondylosis is age-related wear and tear of the spinal disks in the neck, causing neck pain, stiffness, and sometimes nerve compression.",
+      "severity": "moderate",
+      "body_system": "Musculoskeletal",
+      "precautions": ["Maintain proper posture", "Avoid sudden neck movements", "Use ergonomic workstation", "Do regular gentle exercises"],
+      "medicines": [
+        {"name": "Ibuprofen", "type": "NSAID", "dosage": "400-800mg three times daily with food", "notes": "For pain and inflammation. Take with food."},
+        {"name": "Diclofenac", "type": "NSAID", "dosage": "50-75mg twice daily", "notes": "Also available as topical gel for local application"},
+        {"name": "Methocarbamol", "type": "Muscle Relaxant", "dosage": "1500mg four times daily initially, then 750mg", "notes": "Can cause drowsiness. Avoid alcohol."},
+        {"name": "Gabapentin", "type": "Neuropathic Pain Agent", "dosage": "300mg three times daily, titrate up", "notes": "For nerve pain/radiculopathy component"}
+      ],
+      "lifestyle": ["Ergonomic workplace setup", "Regular neck stretches and exercises", "Proper pillow height at night", "Heat/ice therapy for pain relief"]
+    },
+    "Paralysis (brain hemorrhage)": {
+      "description": "Paralysis from brain hemorrhage occurs when bleeding in the brain damages brain cells, causing loss of motor function.",
+      "severity": "severe",
+      "body_system": "Neurological",
+      "precautions": ["Seek emergency care immediately", "Control blood pressure", "Avoid blood thinners until stability confirmed", "Fall prevention measures"],
+      "medicines": [
+        {"name": "Nimodipine", "type": "Calcium Channel Blocker (Neuroprotective)", "dosage": "60mg every 4 hours for 21 days", "notes": "For vasospasm prevention in subarachnoid hemorrhage"},
+        {"name": "Mannitol", "type": "Osmotic Diuretic (Brain edema)", "dosage": "0.25-1g/kg IV over 20 minutes", "notes": "For acute intracranial pressure reduction"},
+        {"name": "Levetiracetam", "type": "Anticonvulsant", "dosage": "500-1500mg twice daily", "notes": "For seizure prophylaxis"}
+      ],
+      "lifestyle": ["Intensive rehabilitation therapy", "Speech therapy if needed", "Occupational therapy", "Psychological support for patient and family"]
+    },
+    "Jaundice": {
+      "description": "Jaundice is a condition where the skin and whites of the eyes turn yellow due to elevated bilirubin levels in the blood.",
+      "severity": "moderate",
+      "body_system": "Liver",
+      "precautions": ["Avoid alcohol", "Stay well hydrated", "Rest adequately", "Follow up with liver specialist"],
+      "medicines": [
+        {"name": "Ursodeoxycholic Acid", "type": "Bile Acid", "dosage": "300mg three times daily", "notes": "For cholestatic jaundice"},
+        {"name": "Vitamin B12", "type": "Vitamin Supplement", "dosage": "1000mcg daily or as prescribed", "notes": "For nutritional support"},
+        {"name": "Silymarin (Milk Thistle)", "type": "Hepatoprotective", "dosage": "140mg three times daily", "notes": "Liver-protective supplement"}
+      ],
+      "lifestyle": ["Rest adequately", "Stay hydrated", "Avoid alcohol and hepatotoxic drugs", "Eat light, easily digestible meals"]
+    },
+    "Malaria": {
+      "description": "Malaria is a life-threatening disease caused by Plasmodium parasites transmitted through infected Anopheles mosquito bites.",
+      "severity": "severe",
+      "body_system": "Blood",
+      "precautions": ["Use mosquito repellent", "Sleep under insecticide-treated nets", "Take prophylaxis when traveling", "Wear protective clothing at night"],
+      "medicines": [
+        {"name": "Artemether + Lumefantrine (Coartem)", "type": "Antimalarial", "dosage": "4 tablets twice daily for 3 days (with food)", "notes": "First-line treatment. Take with fatty food for better absorption."},
+        {"name": "Chloroquine", "type": "Antimalarial", "dosage": "600mg base initially, then 300mg at 6, 24, 48 hours", "notes": "For chloroquine-sensitive P. vivax or P. malariae"},
+        {"name": "Primaquine", "type": "Antimalarial", "dosage": "15-30mg daily for 14 days", "notes": "For radical cure of P. vivax/ovale. Test G6PD first!"}
+      ],
+      "lifestyle": ["Use mosquito nets and repellent", "Seek treatment immediately if symptoms develop", "Stay hydrated", "Rest until fever subsides"]
+    },
+    "Chicken pox": {
+      "description": "Chickenpox is a highly contagious viral infection causing an itchy blistery rash, fever, and fatigue, caused by the varicella-zoster virus.",
+      "severity": "mild",
+      "body_system": "Skin/Immune",
+      "precautions": ["Isolate from others", "Avoid scratching", "Keep nails short", "Vaccination for prevention"],
+      "medicines": [
+        {"name": "Acyclovir", "type": "Antiviral", "dosage": "800mg five times daily for 5-7 days", "notes": "Most effective if started within 24-48h of rash onset"},
+        {"name": "Calamine Lotion", "type": "Topical Antipruritic", "dosage": "Apply to blisters 3-4 times daily", "notes": "For itch relief. Do not use on face or near eyes."},
+        {"name": "Paracetamol (Acetaminophen)", "type": "Antipyretic", "dosage": "500-1000mg every 4-6 hours", "notes": "For fever. Avoid aspirin in children."},
+        {"name": "Cetirizine", "type": "Antihistamine", "dosage": "10mg once daily", "notes": "To reduce itching"}
+      ],
+      "lifestyle": ["Keep blisters clean and dry", "Wear loose, comfortable clothing", "Trim nails to prevent scratching", "Stay home until all blisters have crusted"]
+    },
+    "Dengue": {
+      "description": "Dengue is a mosquito-borne viral disease causing high fever, severe joint and muscle pain, rash, and may progress to severe bleeding.",
+      "severity": "severe",
+      "body_system": "Blood/Immune",
+      "precautions": ["Eliminate mosquito breeding sites", "Use repellent", "Seek immediate care if platelet count drops", "Avoid NSAIDs and aspirin"],
+      "medicines": [
+        {"name": "Paracetamol", "type": "Antipyretic/Analgesic", "dosage": "500-1000mg every 4-6 hours (max 4g/day)", "notes": "FIRST-CHOICE. Avoid aspirin and ibuprofen which increase bleeding risk."},
+        {"name": "Oral Rehydration Salts", "type": "Rehydration", "dosage": "200-400ml per hour", "notes": "Crucial for preventing dengue shock syndrome"},
+        {"name": "Platelet transfusion", "type": "Blood Product", "dosage": "As prescribed by physician when platelets < 10,000", "notes": "Hospital-based treatment for severe dengue"}
+      ],
+      "lifestyle": ["Rest completely", "Drink plenty of fluids (water, coconut water, juices)", "Monitor for warning signs (bleeding, severe abdominal pain)", "Use mosquito repellent"]
+    },
+    "Typhoid": {
+      "description": "Typhoid fever is a bacterial infection caused by Salmonella typhi, spread through contaminated food and water.",
+      "severity": "severe",
+      "body_system": "Digestive/Blood",
+      "precautions": ["Drink safe water only", "Eat thoroughly cooked food", "Practice hand hygiene", "Get typhoid vaccination"],
+      "medicines": [
+        {"name": "Azithromycin", "type": "Antibiotic", "dosage": "500mg once daily for 7 days", "notes": "Preferred outpatient treatment for uncomplicated typhoid"},
+        {"name": "Ceftriaxone", "type": "Cephalosporin Antibiotic (IV)", "dosage": "2g IV once daily for 7-14 days", "notes": "For severe/complicated cases requiring hospitalization"},
+        {"name": "Ciprofloxacin", "type": "Fluoroquinolone", "dosage": "500mg twice daily for 10-14 days", "notes": "Check local resistance patterns before prescribing"}
+      ],
+      "lifestyle": ["Drink only boiled or bottled water", "Eat only freshly cooked food", "Practice strict hand hygiene", "Rest until fully recovered"]
+    },
+    "Hepatitis A": {
+      "description": "Hepatitis A is a liver infection caused by the Hepatitis A virus (HAV), spread through contaminated food, water, or close contact.",
+      "severity": "moderate",
+      "body_system": "Liver",
+      "precautions": ["Get vaccinated", "Wash hands thoroughly", "Avoid raw shellfish", "Use safe water"],
+      "medicines": [
+        {"name": "Paracetamol (low dose)", "type": "Symptomatic", "dosage": "500mg every 6-8 hours (limit to 2g/day due to liver affection)", "notes": "For fever and discomfort. Reduced dose due to liver disease."},
+        {"name": "Ondansetron", "type": "Antiemetic", "dosage": "4-8mg every 8 hours", "notes": "For nausea and vomiting"},
+        {"name": "Vitamin B Complex", "type": "Nutritional Support", "dosage": "As directed on label", "notes": "To support recovery and liver function"}
+      ],
+      "lifestyle": ["Adequate rest", "Nutritious low-fat diet", "Avoid alcohol completely", "Stay well hydrated"]
+    },
+    "Hepatitis B": {
+      "description": "Hepatitis B is a viral liver infection transmitted through blood, sexual contact, or from mother to baby. Chronic infection can lead to cirrhosis.",
+      "severity": "severe",
+      "body_system": "Liver",
+      "precautions": ["Get vaccinated", "Use protection during sex", "Avoid sharing needles", "Regular HBsAg and liver monitoring"],
+      "medicines": [
+        {"name": "Tenofovir disoproxil fumarate", "type": "Antiviral (Nucleotide)", "dosage": "300mg once daily", "notes": "First-line antiviral for chronic Hepatitis B"},
+        {"name": "Entecavir", "type": "Antiviral (Nucleoside)", "dosage": "0.5mg once daily (1mg in lamivudine-resistant)", "notes": "Take on empty stomach. High barrier to resistance."},
+        {"name": "Pegylated Interferon alfa-2a", "type": "Immunomodulator", "dosage": "180mcg subcutaneously weekly for 48 weeks", "notes": "For selected patients; multiple side effects"}
+      ],
+      "lifestyle": ["Avoid alcohol completely", "Regular liver function monitoring", "Healthy low-fat diet", "Exercise regularly"]
+    },
+    "Hepatitis C": {
+      "description": "Hepatitis C is a viral liver infection primarily spread through blood. Chronic infection leads to liver damage, cirrhosis, and liver cancer.",
+      "severity": "severe",
+      "body_system": "Liver",
+      "precautions": ["Avoid sharing needles", "Use protection", "Regular anti-HCV monitoring", "Avoid alcohol"],
+      "medicines": [
+        {"name": "Sofosbuvir + Velpatasvir", "type": "Direct-Acting Antiviral (DAA)", "dosage": "One tablet (400mg/100mg) once daily for 12 weeks", "notes": "Pan-genotypic regimen. Cure rate >95%."},
+        {"name": "Glecaprevir + Pibrentasvir", "type": "Direct-Acting Antiviral", "dosage": "3 tablets once daily for 8-12 weeks with food", "notes": "For all genotypes. Highly effective pan-genotypic regimen."},
+        {"name": "Ribavirin", "type": "Antiviral (adjunct)", "dosage": "Weight-based (1000-1200mg/day) in divided doses", "notes": "Combined with other antivirals in difficult-to-treat cases"}
+      ],
+      "lifestyle": ["Complete abstinence from alcohol", "Healthy diet", "Regular monitoring of viral load and liver enzymes", "Avoid hepatotoxic medications"]
+    },
+    "Hepatitis D": {
+      "description": "Hepatitis D is a liver infection that only affects people with Hepatitis B. It is the most severe form of hepatitis.",
+      "severity": "severe",
+      "body_system": "Liver",
+      "precautions": ["Get Hepatitis B vaccine", "Avoid sharing needles", "Regular liver monitoring", "Avoid alcohol"],
+      "medicines": [
+        {"name": "Pegylated Interferon alfa", "type": "Antiviral/Immunomodulator", "dosage": "180mcg weekly subcutaneously for 48-72 weeks", "notes": "Currently only effective treatment for chronic hepatitis D"},
+        {"name": "Bulevirtide", "type": "Entry Inhibitor (new)", "dosage": "2mg subcutaneously daily", "notes": "Newly approved entry inhibitor for hepatitis D"}
+      ],
+      "lifestyle": ["Strict alcohol avoidance", "Low-fat, high-protein diet", "Regular specialist follow-up", "Hepatitis B vaccination to prevent co-infection"]
+    },
+    "Hepatitis E": {
+      "description": "Hepatitis E is a liver disease caused by the Hepatitis E virus (HEV), primarily transmitted through contaminated drinking water.",
+      "severity": "moderate",
+      "body_system": "Liver",
+      "precautions": ["Use safe water", "Practice food hygiene", "Extra precaution in pregnancy", "Avoid travel to endemic areas"],
+      "medicines": [
+        {"name": "Ribavirin", "type": "Antiviral", "dosage": "600-1200mg/day for 3-6 months", "notes": "For chronic HEV in immunocompromised. Avoid in pregnancy."},
+        {"name": "Supportive care (IV fluids)", "type": "Supportive", "dosage": "As prescribed", "notes": "Most acute cases resolve without specific antiviral therapy"},
+        {"name": "Vitamin supplements", "type": "Nutritional Support", "dosage": "As recommended", "notes": "To support liver recovery"}
+      ],
+      "lifestyle": ["Rest and hydration", "Avoid alcohol", "Eat cooked food from safe sources", "Extra caution if pregnant"]
+    },
+    "Alcoholic hepatitis": {
+      "description": "Alcoholic hepatitis is liver inflammation caused by excessive alcohol consumption, leading to liver damage.",
+      "severity": "severe",
+      "body_system": "Liver",
+      "precautions": ["Complete alcohol abstinence", "Nutritional support", "Monitor for infections", "Avoid hepatotoxic drugs"],
+      "medicines": [
+        {"name": "Prednisolone", "type": "Corticosteroid", "dosage": "40mg once daily for 4 weeks, then taper", "notes": "For severe alcoholic hepatitis (Maddrey's Discriminant Function > 32)"},
+        {"name": "N-Acetylcysteine (NAC)", "type": "Antioxidant", "dosage": "150mg/kg IV loading, then maintenance as prescribed", "notes": "Adjunct therapy; improves short-term survival"},
+        {"name": "Thiamine (Vitamin B1)", "type": "Vitamin", "dosage": "100mg IV or IM for 3 days, then oral", "notes": "Essential to prevent Wernicke's encephalopathy in alcoholics"}
+      ],
+      "lifestyle": ["Complete and permanent alcohol cessation", "Nutritional rehabilitation", "Psychological support and counseling", "Monitoring for liver failure complications"]
+    },
+    "Tuberculosis": {
+      "description": "Tuberculosis (TB) is a contagious bacterial infection caused by Mycobacterium tuberculosis, primarily affecting the lungs.",
+      "severity": "severe",
+      "body_system": "Respiratory",
+      "precautions": ["Cover mouth when coughing", "Complete full treatment course", "Ensure good ventilation", "Get BCG vaccination"],
+      "medicines": [
+        {"name": "HRZE Regimen (Isoniazid + Rifampicin + Pyrazinamide + Ethambutol)", "type": "First-line Anti-TB", "dosage": "Weight-based dosing for 2 months intensive phase, then HR for 4 months", "notes": "NEVER take partial treatment. Full 6-month course mandatory."},
+        {"name": "Pyridoxine (Vitamin B6)", "type": "Vitamin (Protective)", "dosage": "25-50mg daily", "notes": "Prevents isoniazid-induced peripheral neuropathy"}
+      ],
+      "lifestyle": ["Complete full 6-month treatment", "Good nutrition and rest", "Ensure adequate ventilation at home", "Regular sputum culture follow-up"]
+    },
+    "Common Cold": {
+      "description": "The common cold is a viral infection of the upper respiratory tract, primarily caused by rhinoviruses.",
+      "severity": "mild",
+      "body_system": "Respiratory",
+      "precautions": ["Wash hands frequently", "Avoid close contact with infected persons", "Boost immune system", "Stay warm"],
+      "medicines": [
+        {"name": "Paracetamol", "type": "Antipyretic/Analgesic", "dosage": "500-1000mg every 4-6 hours as needed", "notes": "For fever and body aches"},
+        {"name": "Cetirizine", "type": "Antihistamine", "dosage": "10mg once daily", "notes": "For runny nose and sneezing"},
+        {"name": "Pseudoephedrine", "type": "Nasal Decongestant", "dosage": "60mg every 4-6 hours", "notes": "Do not use for more than 7 days. Avoid in hypertension."},
+        {"name": "Zinc lozenges", "type": "Supplement", "dosage": "13.3mg every 2 hours while awake", "notes": "Start within 24 hours of symptoms. May reduce duration."}
+      ],
+      "lifestyle": ["Rest and stay hydrated", "Honey and lemon in warm water for sore throat", "Steam inhalation for congestion", "Vitamin C supplementation"]
+    },
+    "Pneumonia": {
+      "description": "Pneumonia is an infection that inflames the air sacs in one or both lungs, which may fill with fluid or pus.",
+      "severity": "severe",
+      "body_system": "Respiratory",
+      "precautions": ["Get pneumococcal vaccine", "Quit smoking", "Maintain good oral hygiene", "Treat respiratory infections promptly"],
+      "medicines": [
+        {"name": "Amoxicillin", "type": "Antibiotic (community-acquired, outpatient)", "dosage": "500mg-1g three times daily for 5-7 days", "notes": "First-line for mild community-acquired pneumonia"},
+        {"name": "Azithromycin", "type": "Macrolide Antibiotic", "dosage": "500mg on day 1, then 250mg daily for 4 days", "notes": "For atypical pneumonia or penicillin allergy"},
+        {"name": "Ceftriaxone + Azithromycin", "type": "Inpatient Combination Antibiotic", "dosage": "Ceftriaxone 1-2g IV daily + Azithromycin 500mg IV daily", "notes": "Standard inpatient regimen for moderate-severe CAP"}
+      ],
+      "lifestyle": ["Rest and adequate fluid intake", "Breathing exercises once acute phase passes", "Quit smoking", "Follow-up chest X-ray in 6-8 weeks"]
+    },
+    "Dimorphic hemmorhoids (piles)": {
+      "description": "Hemorrhoids (piles) are swollen veins in the lower rectum and anus, causing discomfort, itching, and sometimes bleeding.",
+      "severity": "mild",
+      "body_system": "Digestive",
+      "precautions": ["Maintain high fiber diet", "Drink plenty of water", "Avoid straining", "Don't ignore urge to defecate"],
+      "medicines": [
+        {"name": "Hydrocortisone + Lidocaine cream", "type": "Topical Steroid + Anesthetic", "dosage": "Apply to affected area 2-4 times daily", "notes": "For temporary relief. Do not use for more than 7 days continuously."},
+        {"name": "Psyllium Husk (Isabgol)", "type": "Fiber Supplement", "dosage": "1-2 tsp in water twice daily", "notes": "Bulk-forming laxative to soften stool"},
+        {"name": "Diosmin + Hesperidin (Daflon)", "type": "Venoactive Drug", "dosage": "450mg/50mg twice daily for acute flare-ups", "notes": "Reduces bleeding and discomfort in hemorrhoids"}
+      ],
+      "lifestyle": ["High-fiber diet (fruits, vegetables, whole grains)", "Drink 8+ glasses of water daily", "Sitz baths 2-3 times daily", "Avoid prolonged sitting on toilet"]
+    },
+    "Heart attack": {
+      "description": "A heart attack (myocardial infarction) occurs when blood flow to part of the heart is blocked, causing heart muscle damage.",
+      "severity": "severe",
+      "body_system": "Cardiovascular",
+      "precautions": ["Call emergency services immediately (911/112)", "Chew aspirin if no allergy", "Rest and avoid activity", "Do NOT drive yourself to hospital"],
+      "medicines": [
+        {"name": "Aspirin", "type": "Antiplatelet (Emergency)", "dosage": "325mg chewed immediately at symptom onset", "notes": "EMERGENCY: chew (not swallow whole) immediately when heart attack is suspected"},
+        {"name": "Dual Antiplatelet: Aspirin + Clopidogrel/Ticagrelor", "type": "Antiplatelet (Post-MI)", "dosage": "Aspirin 100mg + Ticagrelor 90mg twice daily for 12 months", "notes": "Post-MI treatment to prevent recurrent events"},
+        {"name": "Atorvastatin", "type": "Statin (High-intensity)", "dosage": "40-80mg once daily at night", "notes": "Start immediately post-MI. Take at bedtime."},
+        {"name": "Metoprolol", "type": "Beta-Blocker", "dosage": "25-200mg twice daily", "notes": "Cardioprotective. Monitor heart rate (keep >60 bpm)."}
+      ],
+      "lifestyle": ["Cardiac rehabilitation program", "Heart-healthy diet", "Regular supervised exercise", "Strict smoking cessation"]
+    },
+    "Varicose veins": {
+      "description": "Varicose veins are enlarged, twisted veins near the skin surface caused by weak or damaged vein valves.",
+      "severity": "mild",
+      "body_system": "Cardiovascular",
+      "precautions": ["Elevate legs when resting", "Avoid prolonged standing", "Exercise regularly", "Wear compression stockings"],
+      "medicines": [
+        {"name": "Diosmin + Hesperidin", "type": "Venotonic", "dosage": "450/50mg twice daily with meals", "notes": "Reduces symptoms of chronic venous insufficiency"},
+        {"name": "Horse Chestnut Extract (Escin)", "type": "Herbal Venotonic", "dosage": "50mg escin twice daily", "notes": "May reduce leg swelling and heaviness"}
+      ],
+      "lifestyle": ["Wear graduated compression stockings", "Elevate legs 30 minutes several times a day", "Avoid prolonged standing or sitting", "Maintain healthy weight"]
+    },
+    "Hypothyroidism": {
+      "description": "Hypothyroidism occurs when the thyroid gland produces insufficient thyroid hormone, slowing metabolism and causing fatigue, weight gain, and cold intolerance.",
+      "severity": "moderate",
+      "body_system": "Endocrine",
+      "precautions": ["Take medication at consistent time daily", "Regular TSH monitoring", "Maintain healthy diet", "Avoid excessive iodine intake"],
+      "medicines": [
+        {"name": "Levothyroxine (T4)", "type": "Thyroid Hormone Replacement", "dosage": "1.6mcg/kg/day initially, adjusted based on TSH", "notes": "Take on empty stomach 30-60 min before breakfast. Separate from calcium/iron."},
+        {"name": "Liothyronine (T3)", "type": "Active Thyroid Hormone", "dosage": "25mcg daily (in combination with T4 in select cases)", "notes": "For patients who feel better on T3+T4 combination therapy"}
+      ],
+      "lifestyle": ["Take medication consistently (same time daily)", "Regular TSH monitoring every 6-12 months", "Selenium-rich foods (Brazil nuts, fish)", "Avoid excessive soy and cruciferous vegetables"]
+    },
+    "Hyperthyroidism": {
+      "description": "Hyperthyroidism is when the thyroid gland produces too much thyroid hormone, accelerating metabolism with symptoms like weight loss, rapid heartbeat, and anxiety.",
+      "severity": "moderate",
+      "body_system": "Endocrine",
+      "precautions": ["Regular thyroid function tests", "Monitor heart rate", "Avoid excessive iodine", "Avoid caffeine"],
+      "medicines": [
+        {"name": "Methimazole (Carbimazole)", "type": "Antithyroid Drug", "dosage": "10-30mg daily, adjusted to lowest effective dose", "notes": "First-line treatment. Check CBC for agranulocytosis if fever/sore throat."},
+        {"name": "Propylthiouracil (PTU)", "type": "Antithyroid Drug", "dosage": "100-300mg three times daily", "notes": "Preferred in first trimester pregnancy. More frequent dosing than methimazole."},
+        {"name": "Propranolol", "type": "Beta-Blocker (Symptomatic)", "dosage": "20-80mg every 6-8 hours", "notes": "For symptomatic relief: heart rate, tremor, anxiety. Not a definitive treatment."}
+      ],
+      "lifestyle": ["Avoid foods high in iodine (seaweed, large amounts of seafood)", "Reduce stress", "Regular follow-up appointments", "Dental hygiene (radioactive iodine reduces saliva)"]
+    },
+    "Hypoglycemia": {
+      "description": "Hypoglycemia is abnormally low blood sugar (glucose), which can cause symptoms ranging from shakiness to seizures and loss of consciousness.",
+      "severity": "severe",
+      "body_system": "Endocrine",
+      "precautions": ["Always carry fast-acting glucose", "Eat regular meals", "Monitor blood sugar regularly", "Medic alert bracelet"],
+      "medicines": [
+        {"name": "Glucose tablets/gel", "type": "Fast-acting Glucose (Emergency)", "dosage": "15-20g orally for mild hypoglycemia, repeat in 15 min if needed", "'15-15 Rule'": "15g of fast carbs, check sugar after 15 min."},
+        {"name": "Glucagon Kit", "type": "Emergency Glucagon Injection", "dosage": "1mg IM or SC for severe hypoglycemia (unconscious patient)", "notes": "Emergency use. Give when patient cannot swallow. Call ambulance."},
+        {"name": "Dextrose (D50W)", "type": "IV Glucose (Hospital)", "dosage": "25-50ml of 50% dextrose IV", "notes": "Hospital-based treatment for severe hypoglycemia"}
+      ],
+      "lifestyle": ["Never skip meals", "Carry emergency fast-acting glucose always", "Wear medical ID bracelet", "Educate family members on glucagon use"]
+    },
+    "Osteoarthritis": {
+      "description": "Osteoarthritis is the most common form of arthritis, caused by worn-down cartilage in joints, primarily affecting the knees, hips, and hands.",
+      "severity": "moderate",
+      "body_system": "Musculoskeletal",
+      "precautions": ["Maintain healthy weight", "Regular low-impact exercise", "Protect joints from injury", "Use assistive devices"],
+      "medicines": [
+        {"name": "Paracetamol", "type": "Analgesic (First-line)", "dosage": "500-1000mg up to 4 times daily", "notes": "First-choice for mild-moderate OA pain"},
+        {"name": "Ibuprofen / Diclofenac", "type": "NSAID", "dosage": "Ibuprofen 400-800mg 3x daily or Diclofenac 50mg 2-3x daily", "notes": "Take with food. Monitor renal function and BP."},
+        {"name": "Glucosamine + Chondroitin", "type": "Joint Supplement", "dosage": "Glucosamine 1500mg + Chondroitin 1200mg daily", "notes": "May provide modest benefit for knee OA. Allow 2-3 months for effect."},
+        {"name": "Intra-articular Corticosteroid injection", "type": "Joint Injection", "dosage": "40mg methylprednisolone injection (administered by doctor)", "notes": "For acute flare-ups. Max 3-4 injections per year."}
+      ],
+      "lifestyle": ["Low-impact exercise (swimming, cycling, walking)", "Weight management", "Hot/cold therapy", "Physiotherapy"]
+    },
+    "Arthritis": {
+      "description": "Arthritis is inflammation of one or more joints, causing pain, swelling, and stiffness. Rheumatoid arthritis is an autoimmune form.",
+      "severity": "moderate",
+      "body_system": "Musculoskeletal",
+      "precautions": ["Regular monitoring of joint health", "Avoid joint strain", "Take medications consistently", "Physical therapy"],
+      "medicines": [
+        {"name": "Methotrexate", "type": "DMARD (Disease-Modifying)", "dosage": "7.5-25mg once weekly", "notes": "Take with folic acid. Regular liver and blood monitoring essential."},
+        {"name": "Hydroxychloroquine", "type": "Antimalarial DMARD", "dosage": "200-400mg daily", "notes": "Annual eye exams required. Takes 3-6 months for full effect."},
+        {"name": "Etanercept / Adalimumab", "type": "Biologic DMARD (TNF inhibitor)", "dosage": "As prescribed (SC injection)", "notes": "For moderate-severe RA not responding to conventional DMARDs"},
+        {"name": "Prednisolone", "type": "Corticosteroid (Bridge therapy)", "dosage": "5-15mg daily initially, taper to lowest effective dose", "notes": "Short-term use for flare control"}
+      ],
+      "lifestyle": ["Balanced rest and activity", "Physiotherapy and occupational therapy", "Omega-3 rich diet (anti-inflammatory)", "Warm water exercises"]
+    },
+    "Urinary tract infection": {
+      "description": "A urinary tract infection (UTI) is an infection in any part of the urinary system, most commonly the bladder and urethra.",
+      "severity": "mild",
+      "body_system": "Urinary",
+      "precautions": ["Drink plenty of water", "Urinate after sex", "Wipe front to back", "Avoid irritating products"],
+      "medicines": [
+        {"name": "Nitrofurantoin", "type": "Antibiotic (First-line UTI)", "dosage": "100mg modified-release twice daily for 5-7 days with food", "notes": "Do not use if eGFR < 45. Take with food."},
+        {"name": "Trimethoprim", "type": "Antibiotic", "dosage": "200mg twice daily for 7 days", "notes": "Check local resistance patterns"},
+        {"name": "Fosfomycin", "type": "Antibiotic (Single dose)", "dosage": "3g sachet single dose dissolved in water", "notes": "Convenient single-dose treatment for uncomplicated UTI"},
+        {"name": "Ciprofloxacin", "type": "Quinolone Antibiotic", "dosage": "500mg twice daily for 3-7 days", "notes": "Reserve for complicated UTI or treatment failures"}
+      ],
+      "lifestyle": ["Drink 8-10 glasses of water daily", "Urinate when you feel the urge", "Cranberry products (preventive only)", "Front-to-back hygiene"]
+    },
+    "Psoriasis": {
+      "description": "Psoriasis is a chronic autoimmune condition causing rapid skin cell buildup, resulting in scaling, red patches, and itching.",
+      "severity": "moderate",
+      "body_system": "Skin/Immune",
+      "precautions": ["Moisturize regularly", "Avoid triggers (stress, infections)", "Use sunscreen", "Avoid skin trauma"],
+      "medicines": [
+        {"name": "Betamethasone dipropionate", "type": "Topical Corticosteroid", "dosage": "Apply thin layer once or twice daily to affected areas", "notes": "High-potency steroid. Avoid on face and skin folds. Do not use long-term."},
+        {"name": "Calcipotriol", "type": "Vitamin D Analogue (Topical)", "dosage": "Apply twice daily (max 100g/week)", "notes": "Safe for long-term use. Use separately from corticosteroids."},
+        {"name": "Methotrexate", "type": "Systemic DMARD", "dosage": "7.5-25mg once weekly", "notes": "For moderate-severe psoriasis. Regular blood and liver monitoring."},
+        {"name": "Adalimumab / Secukinumab", "type": "Biologic (TNF / IL-17 inhibitor)", "dosage": "As prescribed (SC injection)", "notes": "For severe psoriasis not responding to other treatments"}
+      ],
+      "lifestyle": ["Moisturize daily", "Limit alcohol consumption", "Manage stress effectively", "Phototherapy under medical supervision"]
+    },
+    "Impetigo": {
+      "description": "Impetigo is a highly contagious skin infection that mainly affects children, causing red sores that rupture and form honey-colored crusts.",
+      "severity": "mild",
+      "body_system": "Skin",
+      "precautions": ["Practice good hand hygiene", "Avoid touching sores", "Don't share personal items", "Keep wounds clean"],
+      "medicines": [
+        {"name": "Mupirocin (Bactroban) cream", "type": "Topical Antibiotic", "dosage": "Apply to affected areas 3 times daily for 5-7 days", "notes": "First-line for localized impetigo. Clean area before application."},
+        {"name": "Fusidic acid cream", "type": "Topical Antibiotic", "dosage": "Apply 3 times daily for 5-7 days", "notes": "Alternative topical treatment"},
+        {"name": "Flucloxacillin", "type": "Oral Antibiotic", "dosage": "500mg four times daily for 7 days", "notes": "For widespread impetigo or failure of topical treatment"}
+      ],
+      "lifestyle": ["Keep affected areas clean", "Avoid touching or picking at sores", "Change bedding and towels daily", "Stay home from school until sores crust over"]
+    }
+  }
+}

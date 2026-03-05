@@ -1,0 +1,265 @@
+.main {
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    padding: 120px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-full);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+    animation: fadeInUp 0.4s ease forwards;
+    box-shadow: var(--shadow-sm);
+}
+
+.heroBadgeDot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent-blue-dark);
+    border-radius: 50%;
+}
+
+.heroTitle {
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 800;
+    /* Extra bold for light mode impact */
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    color: var(--text-primary);
+    animation: fadeInUp 0.4s 0.1s ease both;
+}
+
+.heroSubtitle {
+    font-size: clamp(16px, 2vw, 18px);
+    color: var(--text-secondary);
+    max-width: 650px;
+    line-height: 1.6;
+    animation: fadeInUp 0.4s 0.2s ease both;
+    font-weight: 500;
+}
+
+.heroCtas {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+    animation: fadeInUp 0.4s 0.3s ease both;
+}
+
+/* Strict Stats Grid */
+.statsBar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    margin-top: 40px;
+    overflow: hidden;
+    animation: fadeInUp 0.4s 0.4s ease both;
+    width: 100%;
+    box-shadow: var(--shadow-sm);
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 32px 24px;
+    background: var(--bg-card);
+}
+
+.statValue {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.statLabel {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Professional Divider */
+.gradientLine {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 0 auto;
+    width: calc(100% - 48px);
+    max-width: 1200px;
+}
+
+/* Features */
+.features {
+    padding: 100px 0;
+}
+
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 64px;
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.sectionTitle {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.sectionSubtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.featureGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.featureCard {
+    padding: 32px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-smooth);
+    box-shadow: var(--shadow-sm);
+}
+
+.featureCard:hover {
+    border-color: #94a3b8;
+    /* slate-400 */
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+}
+
+.featureIconWrapper {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(14, 165, 233, 0.1);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: var(--radius-sm);
+    color: var(--accent-blue-dark);
+    margin-bottom: 24px;
+}
+
+.featureTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.featureDesc {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Strict Clinical CTA */
+.ctaSection {
+    padding: 0 0 100px;
+}
+
+.ctaCard {
+    padding: 64px 48px;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    box-shadow: var(--shadow-card);
+}
+
+.ctaTitle {
+    font-size: clamp(28px, 4vw, 36px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+}
+
+.ctaDesc {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 500px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.disclaimer {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Footer */
+.footer {
+    padding: 32px 0;
+    border-top: 1px solid var(--border-subtle);
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 13px;
+    background: var(--bg-primary);
+}
+
+@media (max-width: 900px) {
+    .statsBar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .hero {
+        padding: 80px 16px 60px;
+    }
+
+    .heroTitle {
+        font-size: 40px;
+    }
+
+    .statsBar {
+        grid-template-columns: 1fr;
+    }
+
+    .ctaCard {
+        padding: 40px 24px;
+    }
+}

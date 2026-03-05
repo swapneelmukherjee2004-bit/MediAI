@@ -1,0 +1,619 @@
+.main {
+    min-height: 100vh;
+    padding: 64px 0 100px;
+    position: relative;
+    z-index: 1;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 56px;
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.title {
+    font-size: clamp(32px, 4vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Two column layout */
+.layout {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+.leftPanel {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 96px;
+}
+
+.rightPanel {
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cards */
+.card {
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.cardHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.cardTitle {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.cardTitle svg {
+    color: var(--text-muted);
+}
+
+.selectedCount {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--accent-blue-dark);
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    border-radius: var(--radius-full);
+}
+
+/* Patient form */
+.patientForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.input {
+    padding: 10px 14px;
+    font-size: 14px;
+}
+
+/* Search */
+.searchWrapper {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.searchInput {
+    padding-left: 42px !important;
+}
+
+/* Selected chips */
+.selectedChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--bg-primary);
+    /* Use base gray background inside the white card */
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--accent-blue);
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 150ms ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.chip:hover {
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--severity-severe);
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+.chipRemove {
+    font-size: 14px;
+    font-weight: 700;
+    opacity: 0.7;
+}
+
+.clearAll {
+    padding: 4px 10px;
+    background: none;
+    color: var(--text-secondary);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 150ms ease;
+}
+
+.clearAll:hover {
+    color: var(--severity-severe);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Symptoms grid */
+.symptomsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.symptomBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 150ms ease;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.symptomBtn:hover {
+    background: var(--bg-card-hover);
+    border-color: #94a3b8;
+    color: var(--text-primary);
+}
+
+.symptomSelected {
+    background: var(--accent-blue-dark) !important;
+    border-color: var(--accent-blue-dark) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.loadingState,
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 48px 32px;
+    width: 100%;
+}
+
+/* Diagnose button */
+.diagnoseWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.diagnoseBtn {
+    width: 100%;
+    padding: 16px !important;
+    font-size: 15px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 800 !important;
+}
+
+.diagnoseBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--bg-primary);
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    box-shadow: none;
+}
+
+/* Error */
+.errorMsg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: var(--severity-severe);
+    font-weight: 500;
+}
+
+/* Empty result state */
+.emptyResults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    gap: 20px;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-lg);
+    padding: 64px 32px;
+    box-shadow: var(--shadow-sm);
+}
+
+.emptyResultsIcon {
+    color: var(--border-strong);
+}
+
+.emptyResults h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.emptyResults p {
+    font-size: 14px;
+    max-width: 360px;
+    line-height: 1.6;
+}
+
+/* Loading results */
+.loadingResults {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    gap: 24px;
+    text-align: center;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.loadingPulse {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--border-subtle);
+    border-top-color: var(--accent-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* Results */
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Primary diagnosis */
+.primaryDiagnosis {
+    padding: 32px;
+    border-top: 4px solid;
+    box-shadow: var(--shadow-card);
+}
+
+.severityMild {
+    border-top-color: var(--severity-mild);
+}
+
+.severityModerate {
+    border-top-color: var(--severity-moderate);
+}
+
+.severitySevere {
+    border-top-color: var(--severity-severe);
+}
+
+.diagnosisHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.diagnosisLabel {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.diseaseName {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+}
+
+.diagnosisMeta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.confidenceCircle {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.confidenceValue {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent-blue-dark);
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.confidenceLabel {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 6px;
+    font-weight: 700;
+}
+
+.diseaseDesc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-weight: 500;
+}
+
+/* Differential diagnoses */
+.differentialList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.differentialItem {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.differentialName {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    min-width: 200px;
+    flex-shrink: 0;
+}
+
+.confidenceBar {
+    flex: 1;
+    height: 6px;
+    background: var(--bg-card-hover);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.confidenceBarFill {
+    height: 100%;
+    background: var(--accent-blue);
+    border-radius: var(--radius-full);
+}
+
+.differentialConfidence {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    min-width: 48px;
+    text-align: right;
+}
+
+/* Medicine cards */
+.medicinesList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.medicineCard {
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-left: 4px solid var(--accent-blue);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
+.medicineHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.medicineName {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.medicineType {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+}
+
+.medicineDosage,
+.medicineNotes {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-top: 8px;
+    font-weight: 500;
+}
+
+.medicineDosage {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.medicineDosage svg,
+.medicineNotes svg {
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Guidelines (Precautions & Lifestyle) */
+.guidelinesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.precautionsList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.precautionItem {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-subtle);
+    font-weight: 500;
+}
+
+.precautionItem:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.precautionItem svg {
+    color: var(--accent-blue-dark);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* Disclaimer */
+.disclaimerCard {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    background: rgba(217, 119, 6, 0.1);
+    border: 1px solid rgba(217, 119, 6, 0.2);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    color: #92400e;
+    /* amber-800 */
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.disclaimerCard svg {
+    color: #d97706;
+    /* amber-600 */
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+
+    .leftPanel {
+        position: static;
+    }
+
+    .guidelinesGrid {
+        grid-template-columns: 1fr;
+    }
+}

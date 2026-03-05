@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.env
+
+# Next.js
+.next/
+out/
+build/
+node_modules/
+
+# OS Files
+.DS_Store
+*.pem
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+frontend/.next/
+frontend/node_modules/
+backend/.venv/
+*.env*
