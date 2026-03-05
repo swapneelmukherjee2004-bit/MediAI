@@ -21,6 +21,7 @@ export default function LoginPage() {
     // If a session already exists, redirect to home
     useEffect(() => {
         if (status === 'authenticated') {
+            router.refresh();
             router.push('/');
         }
     }, [status, router]);
@@ -60,10 +61,12 @@ export default function LoginPage() {
 
         if (result?.error) {
             setError('Invalid email or password. Please try again.');
+            setIsLoading(false);
         } else {
-            router.push('/');
+            // Force a full page load to immediately sync session state
+            // and avoid the Next.js router client-side buffering issue
+            window.location.href = '/';
         }
-        setIsLoading(false);
     };
 
     return (
