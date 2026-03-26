@@ -30,6 +30,11 @@ export default function Error({
             <p style={{ color: 'var(--text-secondary)', maxWidth: '400px' }}>
                 We encountered an unexpected error while rendering this page.
             </p>
+            <pre style={{ color: 'red', textAlign: 'left', background: '#222', padding: '10px', maxWidth: '80%', overflow: 'auto', fontSize: '12px' }}>
+                {error.message}
+                {'\n'}
+                {error.stack}
+            </pre>
             <button
                 onClick={() => reset()}
                 className="btn-primary"

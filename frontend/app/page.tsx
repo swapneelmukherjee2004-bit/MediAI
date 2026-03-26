@@ -10,7 +10,7 @@ const features = [
             </svg>
         ),
         title: 'Clinical-Grade Inference',
-        desc: 'Advanced Random Forest model trained on thousands of samples with 97.6% accuracy across 132 parameters.',
+        desc: 'Advanced Random Forest model trained on thousands of samples with 84.2% accuracy across 132 parameters.',
     },
     {
         icon: (

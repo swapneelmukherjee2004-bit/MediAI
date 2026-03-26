@@ -5,10 +5,13 @@ import json
 import os
 import joblib
 import numpy as np
+import io
+import shap
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from schemas import PredictRequest, PredictResponse, DiseaseResult, Medicine, HealthResponse
+from schemas import PredictRequest, PredictResponse, DiseaseResult, Medicine, HealthResponse, FeatureImportance
 
 # Global state
 model_data = {}
@@ -38,6 +41,12 @@ async def lifespan(app: FastAPI):
     model_data["label_encoder"] = joblib.load(le_path)
     model_data["symptoms_list"] = joblib.load(symptoms_path)
     model_data["diseases"], model_data["symptoms_data"] = load_data()
+    
+    try:
+        model_data["explainer"] = shap.TreeExplainer(model_data["model"])
+    except Exception as e:
+        print(f"Warning: SHAP explainer initialization failed: {e}")
+
     print(f"✅ Model loaded with {len(model_data['label_encoder'].classes_)} diseases")
     yield
     model_data.clear()
@@ -144,6 +153,7 @@ def predict_disease(request: PredictRequest):
     X = feature_vector.reshape(1, -1)
     proba = model.predict_proba(X)[0]
     top_indices = np.argsort(proba)[::-1][:5]  # Top 5 diagnoses
+    primary_idx = top_indices[0]
 
     import random
     top_results = []
@@ -190,6 +200,40 @@ def predict_disease(request: PredictRequest):
         lifestyle=disease_info.get("lifestyle", [])
     )
 
+    # Compute SHAP Feature Importance
+    explainer = model_data.get("explainer")
+    if explainer is not None:
+        try:
+            shap_vals = explainer.shap_values(X)
+            if isinstance(shap_vals, list):
+                vals = shap_vals[primary_idx][0]
+            elif len(shap_vals.shape) == 3:
+                vals = shap_vals[0, :, primary_idx]
+            else:
+                vals = shap_vals[0]
+            
+            importances = []
+            display_names = model_data.get("symptoms_data", {}).get("display_names", {})
+            for i, val in enumerate(vals):
+                if feature_vector[i] == 1 and val > 0:
+                    symptom_key = symptoms_list[i]
+                    display_name = display_names.get(symptom_key, symptom_key.replace("_", " ").title())
+                    importances.append({"symptom": display_name, "contribution": float(val)})
+            
+            importances = sorted(importances, key=lambda x: x["contribution"], reverse=True)[:5]
+            total_positive = sum(x["contribution"] for x in importances)
+            
+            if total_positive > 0:
+                feature_importances = []
+                for item in importances:
+                    feature_importances.append(FeatureImportance(
+                        symptom=item["symptom"],
+                        contribution=round((item["contribution"] / total_positive) * 100, 2)
+                    ))
+                primary_result.feature_importance = feature_importances
+        except Exception as e:
+            print(f"SHAP error: {e}")
+
     return PredictResponse(
         primary_diagnosis=primary_result,
         differential_diagnoses=top_results[1:],
@@ -206,3 +250,126 @@ def get_medicines(disease_name: str):
         if name.lower() == disease_name.lower():
             return {"disease": name, "medicines": info.get("medicines", [])}
     raise HTTPException(status_code=404, detail=f"Disease '{disease_name}' not found")
+
+
+@app.post("/api/generate-pdf", tags=["Reports"])
+def generate_pdf(response_data: PredictResponse):
+    from reportlab.lib.pagesizes import letter
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.colors import HexColor
+
+    buffer = io.BytesIO()
+    c = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+    
+    # Title
+    c.setFont("Helvetica-Bold", 24)
+    c.setFillColor(HexColor("#2b6cb0"))
+    c.drawString(50, height - 50, "MediAI Diagnostic Report")
+    
+    # Primary Diagnosis
+    c.setFont("Helvetica-Bold", 16)
+    c.setFillColor(HexColor("#2d3748"))
+    c.drawString(50, height - 100, f"Primary Diagnosis: {response_data.primary_diagnosis.disease}")
+    
+    c.setFont("Helvetica", 12)
+    c.drawString(50, height - 120, f"Confidence Score: {response_data.primary_diagnosis.confidence:.2f}%")
+    c.drawString(50, height - 140, f"Severity: {response_data.primary_diagnosis.severity.capitalize()}")
+    
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(50, height - 170, "Description:")
+    c.setFont("Helvetica", 11)
+    
+    text = c.beginText(50, height - 190)
+    text.setFont("Helvetica", 11)
+    
+    # Simple text wrap
+    words = response_data.primary_diagnosis.description.split()
+    line = ""
+    for word in words:
+        if len(line) + len(word) > 80:
+            text.textLine(line)
+            line = word + " "
+        else:
+            line += word + " "
+    if line:
+        text.textLine(line)
+    c.drawText(text)
+    
+    current_y = text.getY() - 30
+    
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(50, current_y, "Prescribed Medicines:")
+    current_y -= 20
+    
+    c.setFont("Helvetica", 11)
+    for med in response_data.primary_diagnosis.medicines:
+        c.drawString(60, current_y, f"- {med.name} ({med.type}): {med.dosage}")
+        current_y -= 15
+        if med.notes:
+            c.drawString(70, current_y, f"  Note: {med.notes}")
+            current_y -= 15
+            
+    current_y -= 15
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(50, current_y, "Lifestyle & Precautions:")
+    current_y -= 20
+    c.setFont("Helvetica", 11)
+    all_precautions = response_data.primary_diagnosis.precautions + response_data.primary_diagnosis.lifestyle
+    for prec in all_precautions:
+        c.drawString(60, current_y, f"- {prec}")
+        current_y -= 15
+
+    # Footer Disclaimer
+    c.setFont("Helvetica-Oblique", 9)
+    c.setFillColor(HexColor("#718096"))
+    c.drawString(50, 30, response_data.disclaimer)
+
+    c.save()
+    buffer.seek(0)
+    
+    filename = response_data.primary_diagnosis.disease.replace(' ', '_').lower()
+    return StreamingResponse(
+        buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="diagnosis_{filename}.pdf"'}
+    )
+
+
+@app.get("/api/heatmap", tags=["Epidemiology"])
+def get_heatmap_data(disease: str = None):
+    """Mock geographical data for disease hotspots."""
+    import random
+    
+    if disease:
+        diseases = [disease]
+    else:
+        diseases = list(model_data.get("diseases", {}).keys())
+        if not diseases:
+            diseases = ["Fungal infection", "Allergy", "GERD", "Chronic cholestasis", "Drug Reaction"]
+
+    regions = [
+        {"lat_base": 38.0, "lng_base": -97.0, "spread": 15},   # US
+        {"lat_base": 50.0, "lng_base": 10.0, "spread": 10},    # Europe
+        {"lat_base": 20.0, "lng_base": 77.0, "spread": 10},    # India
+        {"lat_base": -23.0, "lng_base": -46.0, "spread": 5},   # Brazil
+        {"lat_base": 35.0, "lng_base": 105.0, "spread": 15},   # China
+    ]
+    
+    data = []
+    for _ in range(150):
+        region = random.choice(regions)
+        lat = region["lat_base"] + random.uniform(-region["spread"], region["spread"])
+        lng = region["lng_base"] + random.uniform(-region["spread"], region["spread"])
+        
+        disease = random.choice(diseases)
+        intensity = random.uniform(0.3, 1.0)
+        
+        data.append({
+            "lat": round(lat, 4),
+            "lng": round(lng, 4),
+            "disease": disease,
+            "weight": round(intensity, 2)
+        })
+        
+    return {"data": data}

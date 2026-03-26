@@ -1,6 +1,4 @@
-/**
- * API client for the FastAPI backend
- */
+
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -16,6 +14,11 @@ export interface Medicine {
   notes: string;
 }
 
+export interface FeatureImportance {
+  symptom: string;
+  contribution: number;
+}
+
 export interface DiseaseResult {
   disease: string;
   confidence: number;
@@ -25,6 +28,7 @@ export interface DiseaseResult {
   precautions: string[];
   medicines: Medicine[];
   lifestyle: string[];
+  feature_importance?: FeatureImportance[];
 }
 
 export interface DifferentialDiagnosis {

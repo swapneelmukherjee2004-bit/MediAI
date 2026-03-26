@@ -21,6 +21,7 @@ export default function Navbar() {
                     <Link href="/" className={`${styles.link} ${pathname === '/' ? styles.active : ''}`}>Home</Link>
                     <Link href="/diagnose" className={`${styles.link} ${pathname === '/diagnose' ? styles.active : ''}`}>Diagnose</Link>
                     <Link href="/diseases" className={`${styles.link} ${pathname === '/diseases' ? styles.active : ''}`}>Diseases</Link>
+                    <Link href="/heatmap" className={`${styles.link} ${pathname === '/heatmap' ? styles.active : ''}`}>Heatmap</Link>
                     {!session && (
                         <Link href="/login" className={`${styles.link} ${pathname === '/login' ? styles.active : ''}`}>Login</Link>
                     )}

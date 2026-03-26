@@ -55,6 +55,9 @@ export default function DiagnosePage() {
                 gender || undefined
             );
             setResult(data);
+            if (data?.primary_diagnosis?.disease) {
+                localStorage.setItem('lastPredictedDisease', data.primary_diagnosis.disease);
+            }
             setTimeout(() => {
                 document.getElementById('results-section')?.scrollIntoView({ behavior: 'smooth' });
             }, 100);
@@ -243,6 +246,36 @@ export default function DiagnosePage() {
 
                             {result && (
                                 <div className={styles.results}>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                                        <button 
+                                            className="btn-primary" 
+                                            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                                            onClick={async () => {
+                                                try {
+                                                    const res = await fetch('http://localhost:8000/api/generate-pdf', {
+                                                        method: 'POST',
+                                                        headers: { 'Content-Type': 'application/json' },
+                                                        body: JSON.stringify(result)
+                                                    });
+                                                    if (!res.ok) throw new Error('Failed to generate PDF');
+                                                    const blob = await res.blob();
+                                                    const url = window.URL.createObjectURL(blob);
+                                                    const a = document.createElement('a');
+                                                    a.href = url;
+                                                    a.download = `diagnosis_${result.primary_diagnosis.disease.replace(/ /g, '_').toLowerCase()}.pdf`;
+                                                    document.body.appendChild(a);
+                                                    a.click();
+                                                    a.remove();
+                                                } catch(err) {
+                                                    console.error(err);
+                                                    alert("Failed to download PDF report");
+                                                }
+                                            }}
+                                        >
+                                            <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                                            Download PDF Report
+                                        </button>
+                                    </div>
                                     {/* Primary Diagnosis card */}
                                     <div className={`glass-card ${styles.primaryDiagnosis} ${getSeverityClass(result.primary_diagnosis.severity)}`}>
                                         <div className={styles.diagnosisHeader}>
@@ -263,6 +296,30 @@ export default function DiagnosePage() {
                                         </div>
                                         <p className={styles.diseaseDesc}>{result.primary_diagnosis.description}</p>
                                     </div>
+
+                                    {/* AI Explainability (SHAP) */}
+                                    {result.primary_diagnosis.feature_importance && result.primary_diagnosis.feature_importance.length > 0 && (
+                                        <div className={`glass-card ${styles.card}`}>
+                                            <h3 className={styles.cardTitle}><IconActivity /> AI Explainability (Key Symptoms)</h3>
+                                            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '16px', lineHeight: '1.5' }}>
+                                                These symptoms had the highest positive impact on the primary diagnosis prediction, based on SHAP feature importance analysis.
+                                            </p>
+                                            <div className={styles.differentialList}>
+                                                {result.primary_diagnosis.feature_importance.map((feature, i) => (
+                                                    <div key={i} className={styles.differentialItem}>
+                                                        <span className={styles.differentialName}>{feature.symptom}</span>
+                                                        <div className={styles.confidenceBar}>
+                                                            <div
+                                                                className={styles.confidenceBarFill}
+                                                                style={{ width: `${feature.contribution}%`, background: 'var(--accent-blue-dark)' }}
+                                                            ></div>
+                                                        </div>
+                                                        <span className={styles.differentialConfidence}>{feature.contribution.toFixed(1)}%</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Differential diagnoses */}
                                     {result.differential_diagnoses.length > 0 && (

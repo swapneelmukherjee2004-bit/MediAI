@@ -20,6 +20,11 @@ class PredictRequest(BaseModel):
         }
 
 
+class FeatureImportance(BaseModel):
+    symptom: str
+    contribution: float
+
+
 class Medicine(BaseModel):
     name: str
     type: str
@@ -36,6 +41,7 @@ class DiseaseResult(BaseModel):
     precautions: List[str]
     medicines: List[Medicine]
     lifestyle: List[str]
+    feature_importance: Optional[List[FeatureImportance]] = None
 
 
 class PredictResponse(BaseModel):
