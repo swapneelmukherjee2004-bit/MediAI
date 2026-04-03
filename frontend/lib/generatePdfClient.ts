@@ -60,9 +60,10 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
     doc.setFont('helvetica', bold ? 'bold' : 'normal');
     doc.setTextColor(...hexToRgb(color));
     const lines = doc.splitTextToSize(text, TW);
-    checkPage(lines.length * (fontSize + 4));
-    doc.text(lines, ML, y);
-    y += lines.length * (fontSize + 4) + 4;
+    const lineHeight = fontSize * 1.5;
+    checkPage(lines.length * (lineHeight + 2));
+    doc.text(lines, ML, y, { lineHeightFactor: 1.5 });
+    y += lines.length * lineHeight + 4;
   }
 
   // ── Helper: bullet item ──────────────────────────────────────
@@ -71,14 +72,16 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(...hexToRgb(DARK));
     const lines = doc.splitTextToSize(`• ${text}`, TW - 10);
-    checkPage(lines.length * 14);
-    doc.text(lines, ML + 8, y);
-    y += lines.length * 14;
+    const lineHeight = 10 * 1.5;
+    checkPage(lines.length * (lineHeight + 2));
+    doc.text(lines, ML + 8, y, { lineHeightFactor: 1.5 });
+    y += lines.length * lineHeight + 4;
   }
 
   // ── Helper: key/value row ────────────────────────────────────
   function kvRow(key: string, value: string, valueColor = DARK) {
-    checkPage(16);
+    const lineHeight = 10 * 1.5;
+    checkPage(lineHeight + 2);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(...hexToRgb(BLUE));
@@ -86,7 +89,7 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(...hexToRgb(valueColor));
     doc.text(value, ML + 110, y);
-    y += 16;
+    y += lineHeight + 4;
   }
 
   // ════════════════════════════════════════════════════════════
@@ -148,16 +151,17 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
     doc.text('Contribution', MR - 6, y, { align: 'right' });
     y += 8;
     diag.feature_importance.forEach((fi, i) => {
-      checkPage(16);
-      doc.setFillColor(i % 2 === 0 ? 255 : 235, i % 2 === 0 ? 255 : 244, i % 2 === 0 ? 255 : 255);
-      doc.rect(ML, y - 10, TW, 16, 'F');
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(...hexToRgb(DARK));
-      doc.text(fi.symptom, ML + 6, y);
-      doc.text(`${fi.contribution.toFixed(1)}%`, MR - 6, y, { align: 'right' });
-      y += 16;
-    });
+        const lineHeight = 10 * 1.5;
+        checkPage(lineHeight + 2);
+        doc.setFillColor(i % 2 === 0 ? 255 : 235, i % 2 === 0 ? 255 : 244, i % 2 === 0 ? 255 : 255);
+        doc.rect(ML, y - 10, TW, lineHeight + 8, 'F');
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...hexToRgb(DARK));
+        doc.text(fi.symptom, ML + 6, y);
+        doc.text(`${fi.contribution.toFixed(1)}%`, MR - 6, y, { align: 'right' });
+        y += lineHeight + 6;
+      });
     y += 10;
   }
 
@@ -176,16 +180,17 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
     doc.text('Confidence', MR - 6, y, { align: 'right' });
     y += 8;
     data.differential_diagnoses.forEach((d, i) => {
-      checkPage(16);
-      doc.setFillColor(i % 2 === 0 ? 255 : 247, i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 252);
-      doc.rect(ML, y - 10, TW, 16, 'F');
-      doc.setFontSize(10);
-      doc.setFont('helvetica', 'normal');
-      doc.setTextColor(...hexToRgb(DARK));
-      doc.text(d.disease, ML + 6, y);
-      doc.text(`${d.confidence.toFixed(1)}%`, MR - 6, y, { align: 'right' });
-      y += 16;
-    });
+        const lineHeight = 10 * 1.5;
+        checkPage(lineHeight + 2);
+        doc.setFillColor(i % 2 === 0 ? 255 : 247, i % 2 === 0 ? 255 : 250, i % 2 === 0 ? 255 : 252);
+        doc.rect(ML, y - 10, TW, lineHeight + 8, 'F');
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(...hexToRgb(DARK));
+        doc.text(d.disease, ML + 6, y);
+        doc.text(`${d.confidence.toFixed(1)}%`, MR - 6, y, { align: 'right' });
+        y += lineHeight + 6;
+      });
     y += 10;
   }
 
