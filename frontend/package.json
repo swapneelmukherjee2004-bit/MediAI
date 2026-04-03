@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "jspdf": "^4.2.1",
         "leaflet": "^1.9.4",
         "leaflet-defaulticon-compatibility": "^0.1.2",
         "next": "^15.2.1",

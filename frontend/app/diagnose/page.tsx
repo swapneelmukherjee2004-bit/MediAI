@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Navbar from '@/components/Navbar';
 import { api, type Symptom, type PredictResponse } from '@/lib/api';
+import { downloadDiagnosisPdf } from '@/lib/generatePdfClient';
 import styles from './page.module.css';
 
 const IconUser = () => <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>;
@@ -252,15 +253,7 @@ export default function DiagnosePage() {
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                                             onClick={async () => {
                                                 try {
-                                                    const blob = await api.generatePdf(result);
-                                                    const url = window.URL.createObjectURL(blob);
-                                                    const a = document.createElement('a');
-                                                    a.href = url;
-                                                    a.download = `diagnosis_${result.primary_diagnosis.disease.replace(/ /g, '_').toLowerCase()}.pdf`;
-                                                    document.body.appendChild(a);
-                                                    a.click();
-                                                    a.remove();
-                                                    window.URL.revokeObjectURL(url);
+                                                    await downloadDiagnosisPdf(result);
                                                 } catch(err) {
                                                     console.error(err);
                                                     alert("Failed to download PDF report");
