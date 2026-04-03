@@ -1,6 +1,6 @@
 
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+export const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface Symptom {
   key: string;
@@ -73,4 +73,13 @@ export const api = {
       body: JSON.stringify({ symptoms, age, gender }),
     }),
   health: () => fetchApi<{ status: string; model_loaded: boolean }>('/api/health'),
+  generatePdf: async (data: PredictResponse): Promise<Blob> => {
+    const res = await fetch(`${API_BASE}/api/generate-pdf`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Failed to generate PDF');
+    return res.blob();
+  },
 };

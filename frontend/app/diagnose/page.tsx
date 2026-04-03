@@ -252,13 +252,7 @@ export default function DiagnosePage() {
                                             style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                                             onClick={async () => {
                                                 try {
-                                                    const res = await fetch('http://localhost:8000/api/generate-pdf', {
-                                                        method: 'POST',
-                                                        headers: { 'Content-Type': 'application/json' },
-                                                        body: JSON.stringify(result)
-                                                    });
-                                                    if (!res.ok) throw new Error('Failed to generate PDF');
-                                                    const blob = await res.blob();
+                                                    const blob = await api.generatePdf(result);
                                                     const url = window.URL.createObjectURL(blob);
                                                     const a = document.createElement('a');
                                                     a.href = url;
@@ -266,6 +260,7 @@ export default function DiagnosePage() {
                                                     document.body.appendChild(a);
                                                     a.click();
                                                     a.remove();
+                                                    window.URL.revokeObjectURL(url);
                                                 } catch(err) {
                                                     console.error(err);
                                                     alert("Failed to download PDF report");

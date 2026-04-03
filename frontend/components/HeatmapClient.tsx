@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { API_BASE } from '@/lib/api';
 
 
 
@@ -22,7 +23,7 @@ export default function HeatmapClient() {
                 const lastPredicted = localStorage.getItem('lastPredictedDisease');
                 if (lastPredicted) {
                     setDiseaseFilter(lastPredicted);
-                    const url = `http://localhost:8000/api/heatmap?disease=${encodeURIComponent(lastPredicted)}`;
+                    const url = `${API_BASE}/api/heatmap?disease=${encodeURIComponent(lastPredicted)}`;
                     const res = await fetch(url);
                     if (res.ok) {
                         const json = await res.json();
