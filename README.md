@@ -42,7 +42,7 @@ python3 -m venv .venv
 source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
-*(Note: If the pre-trained `model.pkl` is missing, you can regenerate it by running `python model/train.py` from within the backend directory).*
+*(Note: If the pre-trained model files (`tabnet_model.zip` and `xgb_dart_model.pkl`) are missing, you can regenerate them by running `python model/train.py` from within the backend directory).*
 
 ### 3. Frontend Setup
 Install NPM dependencies:

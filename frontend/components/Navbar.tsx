@@ -13,7 +13,7 @@ export default function Navbar() {
         <nav className={styles.nav}>
             <div className={styles.inner}>
                 <Link href="/" className={styles.logo}>
-                    <span className={styles.logoIcon}>⚕</span>
+                    <div className={styles.logoIconWrapper}>⚕</div>
                     <span className={styles.logoText}>Medi<span className={styles.logoAccent}>AI</span></span>
                 </Link>
 

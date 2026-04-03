@@ -3,10 +3,14 @@
     top: 0;
     z-index: 100;
     background: var(--bg-nav-glass);
-    /* white with opacity */
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--border-subtle);
+    transition: box-shadow var(--transition-fast);
+}
+
+.nav:hover {
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
 }
 
 .inner {
@@ -20,46 +24,64 @@
     gap: 32px;
 }
 
+/* ─── Logo ───────────────────────────────────────────────────────────── */
 .logo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
     flex-shrink: 0;
+    transition: opacity var(--transition-fast);
 }
+.logo:hover { opacity: .85; }
 
-.logoIcon {
-    font-size: 20px;
-    color: var(--accent-blue-dark);
+.logoIconWrapper {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-brand);
+    border-radius: 9px;
+    box-shadow: var(--shadow-blue);
+    font-size: 17px;
+    line-height: 1;
+    transition: transform var(--transition-bounce);
 }
+.logo:hover .logoIconWrapper { transform: rotate(-8deg) scale(1.05); }
 
 .logoText {
     font-size: 18px;
     font-weight: 800;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }
 
 .logoAccent {
-    color: var(--accent-blue);
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
+/* ─── Nav links ──────────────────────────────────────────────────────── */
 .links {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 4px;
     flex: 1;
     justify-content: center;
 }
 
 .link {
     padding: 6px 14px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     text-decoration: none;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-secondary);
     transition: all var(--transition-fast);
+    position: relative;
 }
 
 .link:hover {
@@ -69,39 +91,44 @@
 
 .link.active {
     color: var(--accent-blue-dark);
-    background: rgba(14, 165, 233, 0.1);
+    background: rgba(37,99,235,.08);
+    font-weight: 600;
 }
 
-@media (max-width: 640px) {
-    .links {
-        display: none;
-    }
-
-    .inner {
-        justify-content: space-between;
-    }
+/* Underline indicator on active */
+.link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-blue-dark);
 }
 
-/* ─── Authenticated state ──────────────────────────────────────────────────── */
+/* ─── Auth area ──────────────────────────────────────────────────────── */
 .userInfo {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .avatar {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid var(--border-strong);
+    box-shadow: var(--shadow-sm);
 }
 
 .avatarFallback {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: var(--accent-blue-dark);
+    background: var(--gradient-brand);
     color: #fff;
     display: flex;
     align-items: center;
@@ -109,6 +136,7 @@
     font-size: 13px;
     font-weight: 700;
     flex-shrink: 0;
+    box-shadow: var(--shadow-blue);
 }
 
 .userName {
@@ -126,19 +154,23 @@
     align-items: center;
     gap: 6px;
     font-size: 13.5px !important;
-    padding: 8px 14px !important;
+    padding: 7px 14px !important;
     color: var(--text-secondary) !important;
     transition: all var(--transition-fast);
+    border-radius: var(--radius-md) !important;
 }
-
 .logoutBtn:hover {
     color: #dc2626 !important;
     border-color: #fecaca !important;
     background: #fef2f2 !important;
 }
-
 .dark .logoutBtn:hover {
     color: #f87171 !important;
-    border-color: rgba(220, 38, 38, 0.3) !important;
-    background: rgba(220, 38, 38, 0.1) !important;
+    border-color: rgba(220,38,38,.25) !important;
+    background: rgba(220,38,38,.1) !important;
+}
+
+@media (max-width: 640px) {
+    .links { display: none; }
+    .inner { justify-content: space-between; }
 }

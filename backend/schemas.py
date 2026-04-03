@@ -70,3 +70,24 @@ class HealthResponse(BaseModel):
     model_loaded: bool
     total_diseases: int
     total_symptoms: int
+
+
+# ── Model comparison schemas ───────────────────────────────
+
+class ModelCompareDiagnosis(BaseModel):
+    """Top prediction from a single model."""
+    model_name: str
+    top_disease: str
+    confidence: float
+    top_5: List[dict]
+    feature_importance: Optional[List[FeatureImportance]] = None
+
+
+class ModelCompareResponse(BaseModel):
+    """Side-by-side predictions from TabNet and LightGBM DART."""
+    matched_symptoms: List[str]
+    unrecognized_symptoms: List[str]
+    tabnet: ModelCompareDiagnosis
+    lgbm_dart: ModelCompareDiagnosis
+    agreement: bool  # True when both models agree on primary disease
+    disclaimer: str = "This is an AI-based tool for informational purposes only. Always consult a qualified medical professional for diagnosis and treatment."

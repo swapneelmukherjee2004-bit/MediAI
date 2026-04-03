@@ -218,7 +218,7 @@ export default function DiagnosePage() {
                                     {loading ? (
                                         <><div className="spinner"></div> Processing...</>
                                     ) : (
-                                        <>Execute Random Forest inference</>
+                                        <>Execute TabNet Inference</>
                                     )}
                                 </button>
                             </div>
@@ -297,12 +297,12 @@ export default function DiagnosePage() {
                                         <p className={styles.diseaseDesc}>{result.primary_diagnosis.description}</p>
                                     </div>
 
-                                    {/* AI Explainability (SHAP) */}
+                                    {/* AI Explainability (TabNet Attention) */}
                                     {result.primary_diagnosis.feature_importance && result.primary_diagnosis.feature_importance.length > 0 && (
                                         <div className={`glass-card ${styles.card}`}>
                                             <h3 className={styles.cardTitle}><IconActivity /> AI Explainability (Key Symptoms)</h3>
                                             <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '8px', marginBottom: '16px', lineHeight: '1.5' }}>
-                                                These symptoms had the highest positive impact on the primary diagnosis prediction, based on SHAP feature importance analysis.
+                                                These symptoms had the highest positive impact on the primary diagnosis prediction, based on TabNet native attention-mask (sparsemax) feature importance.
                                             </p>
                                             <div className={styles.differentialList}>
                                                 {result.primary_diagnosis.feature_importance.map((feature, i) => (

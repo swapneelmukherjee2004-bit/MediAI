@@ -7,7 +7,10 @@ const path = require('path');
   const page = await browser.newPage();
   await page.setViewportSize({ width: 1440, height: 900 });
 
-  const artifactDir = '/Users/swapneelmukherjee/.gemini/antigravity/brain/83e08b21-8ef7-4a9e-a15a-9389c411785a';
+  const artifactDir = path.join(__dirname, 'screenshots');
+  if (!require('fs').existsSync(artifactDir)) {
+    require('fs').mkdirSync(artifactDir);
+  }
 
   try {
     console.log('Navigating to homepage...');

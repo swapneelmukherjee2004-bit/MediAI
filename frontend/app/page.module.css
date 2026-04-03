@@ -4,58 +4,74 @@
     z-index: 1;
 }
 
-/* Hero Section */
+/* ─── Hero ─────────────────────────────────────────────────────────────── */
 .hero {
     text-align: center;
-    padding: 120px 24px 80px;
+    padding: 140px 24px 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 24px;
-    max-width: 900px;
+    gap: 28px;
+    max-width: 920px;
     margin: 0 auto;
+    position: relative;
+}
+
+/* Radial glow behind hero */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, rgba(37,99,235,.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 .heroBadge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
+    gap: 10px;
+    padding: 7px 16px;
     background: var(--bg-card);
-    border: 1px solid var(--border-strong);
+    border: 1px solid rgba(37,99,235,.25);
     border-radius: var(--radius-full);
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
-    color: var(--text-secondary);
-    letter-spacing: 0.02em;
-    animation: fadeInUp 0.4s ease forwards;
-    box-shadow: var(--shadow-sm);
+    color: var(--accent-blue-dark);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    animation: fadeInUp .4s ease forwards;
+    box-shadow: 0 0 0 4px rgba(37,99,235,.06), var(--shadow-sm);
 }
 
 .heroBadgeDot {
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
     background: var(--accent-blue-dark);
     border-radius: 50%;
+    animation: pulse 2s infinite;
 }
 
 .heroTitle {
-    font-size: clamp(40px, 6vw, 72px);
-    font-weight: 800;
-    /* Extra bold for light mode impact */
-    letter-spacing: -0.04em;
-    line-height: 1.05;
+    font-size: clamp(44px, 6.5vw, 76px);
+    font-weight: 900;
+    letter-spacing: -0.045em;
+    line-height: 1.02;
     color: var(--text-primary);
-    animation: fadeInUp 0.4s 0.1s ease both;
+    animation: fadeInUp .4s .08s ease both;
 }
 
 .heroSubtitle {
-    font-size: clamp(16px, 2vw, 18px);
+    font-size: clamp(15px, 2vw, 18px);
     color: var(--text-secondary);
-    max-width: 650px;
-    line-height: 1.6;
-    animation: fadeInUp 0.4s 0.2s ease both;
-    font-weight: 500;
+    max-width: 620px;
+    line-height: 1.65;
+    animation: fadeInUp .4s .16s ease both;
+    font-weight: 400;
 }
 
 .heroCtas {
@@ -64,22 +80,22 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 8px;
-    animation: fadeInUp 0.4s 0.3s ease both;
+    animation: fadeInUp .4s .24s ease both;
 }
 
-/* Strict Stats Grid */
+/* ─── Stats bar ─────────────────────────────────────────────────────────── */
 .statsBar {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 1px;
+    gap: 0;
     background: var(--border-subtle);
     border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-lg);
-    margin-top: 40px;
+    border-radius: var(--radius-xl);
+    margin-top: 48px;
     overflow: hidden;
-    animation: fadeInUp 0.4s 0.4s ease both;
+    animation: fadeInUp .4s .32s ease both;
     width: 100%;
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-card);
 }
 
 .stat {
@@ -88,35 +104,38 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 32px 24px;
+    padding: 36px 24px;
     background: var(--bg-card);
+    transition: background var(--transition-fast);
 }
+.stat:hover { background: var(--bg-card-hover); }
 
 .statValue {
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 800;
     color: var(--text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
 }
 
 .statLabel {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.07em;
 }
 
-/* Professional Divider */
+/* ─── Section divider ───────────────────────────────────────────────────── */
 .gradientLine {
     height: 1px;
-    background: var(--border-subtle);
+    background: linear-gradient(to right, transparent, var(--border-subtle), transparent);
     margin: 0 auto;
     width: calc(100% - 48px);
     max-width: 1200px;
 }
 
-/* Features */
+/* ─── Features ──────────────────────────────────────────────────────────── */
 .features {
     padding: 100px 0;
 }
@@ -129,108 +148,144 @@
 }
 
 .sectionTitle {
-    font-size: clamp(28px, 4vw, 36px);
+    font-size: clamp(28px, 4vw, 38px);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     margin-bottom: 16px;
     color: var(--text-primary);
 }
 
 .sectionSubtitle {
-    font-size: 16px;
+    font-size: 15.5px;
     color: var(--text-secondary);
-    line-height: 1.6;
-    font-weight: 500;
+    line-height: 1.65;
+    font-weight: 400;
 }
 
 .featureGrid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
+    gap: 20px;
 }
 
 .featureCard {
     padding: 32px;
     background: var(--bg-card);
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     transition: all var(--transition-smooth);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
 }
 
+/* Subtle top accent stripe */
+.featureCard::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gradient-brand);
+    opacity: 0;
+    transition: opacity var(--transition-smooth);
+}
+
+.featureCard:hover::before { opacity: 1; }
 .featureCard:hover {
-    border-color: #94a3b8;
-    /* slate-400 */
-    box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    border-color: rgba(37,99,235,.2);
+    box-shadow: var(--shadow-hover), 0 0 0 1px rgba(37,99,235,.08);
+    transform: translateY(-3px);
 }
 
 .featureIconWrapper {
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(14, 165, 233, 0.1);
-    border: 1px solid rgba(14, 165, 233, 0.2);
-    border-radius: var(--radius-sm);
-    color: var(--accent-blue-dark);
+    background: var(--gradient-brand);
+    border-radius: var(--radius-md);
+    color: white;
     margin-bottom: 24px;
+    box-shadow: var(--shadow-blue);
+    transition: transform var(--transition-bounce);
+}
+.featureCard:hover .featureIconWrapper {
+    transform: scale(1.08) rotate(-3deg);
 }
 
 .featureTitle {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     letter-spacing: -0.01em;
 }
 
 .featureDesc {
     font-size: 14px;
     color: var(--text-secondary);
-    line-height: 1.6;
+    line-height: 1.65;
+    font-weight: 400;
 }
 
-/* Strict Clinical CTA */
+/* ─── CTA ───────────────────────────────────────────────────────────────── */
 .ctaSection {
     padding: 0 0 100px;
 }
 
 .ctaCard {
-    padding: 64px 48px;
+    padding: 72px 48px;
     text-align: center;
     background: var(--bg-card);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 24px;
     box-shadow: var(--shadow-card);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background glow on CTA */
+.ctaCard::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(37,99,235,.08) 0%, transparent 70%);
+    pointer-events: none;
 }
 
 .ctaTitle {
-    font-size: clamp(28px, 4vw, 36px);
+    font-size: clamp(28px, 4vw, 40px);
     font-weight: 800;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.035em;
     color: var(--text-primary);
+    position: relative;
 }
 
 .ctaDesc {
     font-size: 16px;
     color: var(--text-secondary);
-    max-width: 500px;
-    line-height: 1.6;
-    font-weight: 500;
+    max-width: 480px;
+    line-height: 1.65;
+    font-weight: 400;
+    position: relative;
 }
 
 .disclaimer {
     font-size: 12px;
     color: var(--text-muted);
+    font-style: italic;
 }
 
-/* Footer */
+/* ─── Footer ─────────────────────────────────────────────────────────────── */
 .footer {
     padding: 32px 0;
     border-top: 1px solid var(--border-subtle);
@@ -238,28 +293,17 @@
     color: var(--text-muted);
     font-size: 13px;
     background: var(--bg-primary);
+    font-weight: 500;
 }
 
 @media (max-width: 900px) {
-    .statsBar {
-        grid-template-columns: repeat(2, 1fr);
-    }
+    .statsBar { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 640px) {
-    .hero {
-        padding: 80px 16px 60px;
-    }
-
-    .heroTitle {
-        font-size: 40px;
-    }
-
-    .statsBar {
-        grid-template-columns: 1fr;
-    }
-
-    .ctaCard {
-        padding: 40px 24px;
-    }
+    .hero { padding: 90px 16px 60px; }
+    .heroTitle { font-size: 38px; }
+    .statsBar { grid-template-columns: 1fr 1fr; }
+    .ctaCard { padding: 48px 24px; }
+    .featureGrid { grid-template-columns: 1fr; }
 }

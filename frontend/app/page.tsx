@@ -10,7 +10,7 @@ const features = [
             </svg>
         ),
         title: 'Clinical-Grade Inference',
-        desc: 'Advanced Random Forest model trained on thousands of samples with 84.2% accuracy across 132 parameters.',
+        desc: 'Dual-model ensemble: TabNet (attention-based deep learning) + XGBoost DART, trained across 132 symptom parameters for high-accuracy differential diagnosis.',
     },
     {
         icon: (
@@ -65,10 +65,10 @@ const features = [
 ];
 
 const stats = [
-    { value: '41', label: 'Conditions Modeled' },
-    { value: '132', label: 'Symptom Vectors' },
-    { value: '84.2%', label: 'Test Accuracy' },
-    { value: '< 50ms', label: 'Inference Latency' },
+    { value: '41',   label: 'Conditions Modeled' },
+    { value: '132',  label: 'Symptom Vectors' },
+    { value: '2',    label: 'AI Models' },
+    { value: '<50ms', label: 'Inference Latency' },
 ];
 
 export default function HomePage() {
@@ -145,7 +145,7 @@ export default function HomePage() {
                         <div className={styles.ctaCard}>
                             <h2 className={styles.ctaTitle}>Commence screening module</h2>
                             <p className={styles.ctaDesc}>
-                                Input multidimensional symptomatic data to query the Random Forest inference engine. No account required.
+                                Input multidimensional symptomatic data to query the TabNet + XGBoost DART inference engine. No account required.
                             </p>
                             <Link href="/diagnose" className="btn-primary" id="cta-diagnose-btn">
                                 Open Diagnostic Interface

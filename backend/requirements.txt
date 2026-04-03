@@ -9,3 +9,6 @@ python-multipart>=0.0.9
 anyio>=4.3.0
 reportlab>=4.0.0
 shap>=0.44.0
+pytorch-tabnet>=4.1
+xgboost>=2.0
+torch>=2.0

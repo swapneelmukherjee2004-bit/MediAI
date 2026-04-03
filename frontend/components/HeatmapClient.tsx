@@ -54,7 +54,7 @@ export default function HeatmapClient() {
                 <svg width="64" height="64" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" /></svg>
                 <h3 style={{ fontSize: '1.5rem', color: 'white', margin: 0 }}>Awaiting Diagnostic Data</h3>
                 <p style={{ maxWidth: '400px' }}>
-                    The Epidemiology Dashboard strictly tracks individual diseases. Please generate a Random Forest symptom prediction on the Diagnose page first to visualize its global hotspots.
+                    The Epidemiology Dashboard strictly tracks individual diseases. Please generate a TabNet symptom prediction on the Diagnose page first to visualize its global hotspots.
                 </p>
             </div>
         );
