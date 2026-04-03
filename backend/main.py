@@ -365,74 +365,178 @@ def get_medicines(disease_name: str):
 @app.post("/api/generate-pdf", tags=["Reports"])
 def generate_pdf(response_data: PredictResponse):
     from reportlab.lib.pagesizes import letter
-    from reportlab.pdfgen import canvas
-    from reportlab.lib.colors import HexColor
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+    from reportlab.lib.colors import HexColor, white, black
+    from reportlab.lib.units import inch
+    from reportlab.lib import colors
+    from reportlab.platypus import (
+        SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
+    )
+    from reportlab.platypus import PageBreak
 
     buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter)
-    width, height = letter
+    doc = SimpleDocTemplate(
+        buffer,
+        pagesize=letter,
+        leftMargin=0.75 * inch,
+        rightMargin=0.75 * inch,
+        topMargin=0.75 * inch,
+        bottomMargin=0.75 * inch,
+    )
 
-    c.setFont("Helvetica-Bold", 24)
-    c.setFillColor(HexColor("#2b6cb0"))
-    c.drawString(50, height - 50, "MediAI Diagnostic Report")
+    styles = getSampleStyleSheet()
+    accent  = HexColor("#2b6cb0")
+    dark    = HexColor("#1a202c")
+    gray    = HexColor("#718096")
+    green   = HexColor("#276749")
+    amber   = HexColor("#744210")
+    red_col = HexColor("#742a2a")
 
-    c.setFont("Helvetica-Bold", 16)
-    c.setFillColor(HexColor("#2d3748"))
-    c.drawString(50, height - 100, f"Primary Diagnosis: {response_data.primary_diagnosis.disease}")
+    SEV_COLORS = {"mild": green, "moderate": amber, "severe": red_col}
 
-    c.setFont("Helvetica", 12)
-    c.drawString(50, height - 120, f"Confidence Score: {response_data.primary_diagnosis.confidence:.2f}%")
-    c.drawString(50, height - 140, f"Severity: {response_data.primary_diagnosis.severity.capitalize()}")
-    c.drawString(50, height - 155, "Model: TabNet (attention-based tabular deep learning)")
+    h1 = ParagraphStyle("h1", fontName="Helvetica-Bold", fontSize=22, textColor=accent, spaceAfter=4)
+    h2 = ParagraphStyle("h2", fontName="Helvetica-Bold", fontSize=14, textColor=dark, spaceAfter=4)
+    h3 = ParagraphStyle("h3", fontName="Helvetica-Bold", fontSize=11, textColor=accent, spaceAfter=2)
+    body = ParagraphStyle("body", fontName="Helvetica", fontSize=10, textColor=dark, leading=15, spaceAfter=3)
+    small = ParagraphStyle("small", fontName="Helvetica-Oblique", fontSize=8, textColor=gray, leading=12)
+    bullet_style = ParagraphStyle("bullet", fontName="Helvetica", fontSize=10, textColor=dark,
+                                   leading=14, leftIndent=12, bulletIndent=0, spaceAfter=2)
 
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(50, height - 185, "Description:")
-    c.setFont("Helvetica", 11)
+    diag = response_data.primary_diagnosis
+    sev_color = SEV_COLORS.get(diag.severity.lower(), gray)
 
-    text = c.beginText(50, height - 205)
-    text.setFont("Helvetica", 11)
-    words = response_data.primary_diagnosis.description.split()
-    line = ""
-    for word in words:
-        if len(line) + len(word) > 80:
-            text.textLine(line)
-            line = word + " "
-        else:
-            line += word + " "
-    if line:
-        text.textLine(line)
-    c.drawText(text)
+    story = []
 
-    current_y = text.getY() - 30
+    # ── Header ──────────────────────────────────────────────
+    story.append(Paragraph("MediAI Diagnostic Report", h1))
+    story.append(HRFlowable(width="100%", thickness=1, color=accent))
+    story.append(Spacer(1, 10))
 
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(50, current_y, "Prescribed Medicines:")
-    current_y -= 20
-    c.setFont("Helvetica", 11)
-    for med in response_data.primary_diagnosis.medicines:
-        c.drawString(60, current_y, f"- {med.name} ({med.type}): {med.dosage}")
-        current_y -= 15
+    # ── Summary table ───────────────────────────────────────
+    summary_data = [
+        ["Primary Diagnosis", diag.disease],
+        ["Confidence Score", f"{diag.confidence:.1f}%"],
+        ["Severity", diag.severity.capitalize()],
+        ["Body System", diag.body_system],
+        ["Model", "TabNet (attention-based tabular deep learning)"],
+    ]
+    tbl = Table(summary_data, colWidths=[2.0 * inch, 4.75 * inch])
+    tbl.setStyle(TableStyle([
+        ("BACKGROUND", (0, 0), (0, -1), HexColor("#EBF4FF")),
+        ("TEXTCOLOR",  (0, 0), (0, -1), accent),
+        ("FONTNAME",   (0, 0), (0, -1), "Helvetica-Bold"),
+        ("FONTNAME",   (1, 0), (1, -1), "Helvetica"),
+        ("FONTSIZE",   (0, 0), (-1, -1), 10),
+        ("ROWBACKGROUNDS", (0, 0), (-1, -1), [HexColor("#F7FAFC"), white]),
+        ("GRID",       (0, 0), (-1, -1), 0.5, HexColor("#CBD5E0")),
+        ("TOPPADDING",    (0, 0), (-1, -1), 5),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 5),
+        ("LEFTPADDING",   (0, 0), (-1, -1), 8),
+        # Severity cell colour
+        ("TEXTCOLOR",  (1, 2), (1, 2), sev_color),
+        ("FONTNAME",   (1, 2), (1, 2), "Helvetica-Bold"),
+    ]))
+    story.append(tbl)
+    story.append(Spacer(1, 14))
+
+    # ── Description ─────────────────────────────────────────
+    story.append(Paragraph("Description", h2))
+    story.append(Paragraph(diag.description, body))
+    story.append(Spacer(1, 10))
+
+    # ── Feature Importance ──────────────────────────────────
+    if diag.feature_importance:
+        story.append(Paragraph("AI Explainability — Key Symptoms (TabNet)", h2))
+        story.append(Paragraph(
+            "Symptoms with highest attention weight during inference:", body
+        ))
+        fi_data = [["Symptom", "Contribution"]] + [
+            [f.symptom, f"{f.contribution:.1f}%"] for f in diag.feature_importance
+        ]
+        fi_tbl = Table(fi_data, colWidths=[4.5 * inch, 2.25 * inch])
+        fi_tbl.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), accent),
+            ("TEXTCOLOR",  (0, 0), (-1, 0), white),
+            ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("FONTNAME",   (0, 1), (-1, -1), "Helvetica"),
+            ("FONTSIZE",   (0, 0), (-1, -1), 10),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#EBF8FF")]),
+            ("GRID",       (0, 0), (-1, -1), 0.5, HexColor("#CBD5E0")),
+            ("TOPPADDING",    (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 8),
+        ]))
+        story.append(fi_tbl)
+        story.append(Spacer(1, 10))
+
+    # ── Differential Diagnoses ──────────────────────────────
+    if response_data.differential_diagnoses:
+        story.append(Paragraph("Differential Diagnoses", h2))
+        diff_data = [["Disease", "Confidence"]] + [
+            [d.get("disease", ""), f"{d.get('confidence', 0):.1f}%"]
+            for d in response_data.differential_diagnoses
+        ]
+        diff_tbl = Table(diff_data, colWidths=[4.5 * inch, 2.25 * inch])
+        diff_tbl.setStyle(TableStyle([
+            ("BACKGROUND", (0, 0), (-1, 0), HexColor("#4A5568")),
+            ("TEXTCOLOR",  (0, 0), (-1, 0), white),
+            ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
+            ("FONTNAME",   (0, 1), (-1, -1), "Helvetica"),
+            ("FONTSIZE",   (0, 0), (-1, -1), 10),
+            ("ROWBACKGROUNDS", (0, 1), (-1, -1), [white, HexColor("#F7FAFC")]),
+            ("GRID",       (0, 0), (-1, -1), 0.5, HexColor("#CBD5E0")),
+            ("TOPPADDING",    (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("LEFTPADDING",   (0, 0), (-1, -1), 8),
+        ]))
+        story.append(diff_tbl)
+        story.append(Spacer(1, 10))
+
+    # ── Medicines ───────────────────────────────────────────
+    story.append(Paragraph("Recommended Pharmacology", h2))
+    for med in diag.medicines:
+        story.append(Paragraph(f"<b>{med.name}</b> <font color='#718096'>({med.type})</font>", h3))
+        story.append(Paragraph(f"Dosage: {med.dosage}", body))
         if med.notes:
-            c.drawString(70, current_y, f"  Note: {med.notes}")
-            current_y -= 15
+            story.append(Paragraph(f"<i>Note: {med.notes}</i>", small))
+        story.append(Spacer(1, 4))
+    story.append(Spacer(1, 6))
 
-    current_y -= 15
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(50, current_y, "Lifestyle & Precautions:")
-    current_y -= 20
-    c.setFont("Helvetica", 11)
-    for prec in response_data.primary_diagnosis.precautions + response_data.primary_diagnosis.lifestyle:
-        c.drawString(60, current_y, f"- {prec}")
-        current_y -= 15
+    # ── Precautions & Lifestyle ─────────────────────────────
+    prec_life_data = []
+    if diag.precautions:
+        prec_life_data.append(
+            [Paragraph("<b>Immediate Precautions</b>", h3),
+             Paragraph("<b>Lifestyle Modifications</b>", h3)]
+        )
+        rows = max(len(diag.precautions), len(diag.lifestyle))
+        for i in range(rows):
+            p = f"• {diag.precautions[i]}" if i < len(diag.precautions) else ""
+            l = f"• {diag.lifestyle[i]}"   if i < len(diag.lifestyle)   else ""
+            prec_life_data.append([
+                Paragraph(p, bullet_style),
+                Paragraph(l, bullet_style),
+            ])
+        pl_tbl = Table(prec_life_data, colWidths=[3.375 * inch, 3.375 * inch])
+        pl_tbl.setStyle(TableStyle([
+            ("VALIGN",     (0, 0), (-1, -1), "TOP"),
+            ("TOPPADDING", (0, 0), (-1, -1), 4),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+            ("INNERGRID",  (0, 0), (-1, -1), 0, white),
+            ("BOX",        (0, 0), (-1, -1), 0, white),
+        ]))
+        story.append(pl_tbl)
+        story.append(Spacer(1, 14))
 
-    c.setFont("Helvetica-Oblique", 9)
-    c.setFillColor(HexColor("#718096"))
-    c.drawString(50, 30, response_data.disclaimer)
+    # ── Disclaimer ──────────────────────────────────────────
+    story.append(HRFlowable(width="100%", thickness=0.5, color=gray))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph(response_data.disclaimer, small))
 
-    c.save()
+    doc.build(story)
     buffer.seek(0)
 
-    filename = response_data.primary_diagnosis.disease.replace(" ", "_").lower()
+    filename = diag.disease.replace(" ", "_").lower()
     return StreamingResponse(
         buffer,
         media_type="application/pdf",
