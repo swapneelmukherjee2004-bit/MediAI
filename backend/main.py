@@ -98,12 +98,7 @@ def _build_top5(proba: np.ndarray, le, randomise_top: bool = True) -> list[dict]
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load ML models and data at startup.
-
-    IMPORTANT: XGBoost DART must be loaded BEFORE TabNet/PyTorch.
-    On Python 3.14, loading XGBoost after PyTorch has initialised
-    causes a C extension segfault. Load order: XGBoost → TabNet.
-    """
+    """Load ML models and data at startup."""
     base = os.path.dirname(__file__)
     rf_path = os.path.join(base, "model", "random_forest.pkl")
     le_path = os.path.join(base, "model", "label_encoder.pkl")
@@ -126,14 +121,14 @@ async def lifespan(app: FastAPI):
     model_data["diseases"], model_data["symptoms_data"] = load_data()
 
     n_diseases = len(model_data["label_encoder"].classes_)
-    print(f"✅ TabNet loaded  | {n_diseases} diseases")
+    print(f"✅ Data loaded | {n_diseases} diseases")
     yield
     model_data.clear()
 
 
 app = FastAPI(
     title="Disease Detection API",
-    description="AI-powered disease detection — TabNet (primary) + XGBoost DART (secondary)",
+    description="AI-powered disease detection — RandomForest (primary model)",
     version="2.0.0",
     lifespan=lifespan,
 )
@@ -281,8 +276,8 @@ def predict_disease(request: PredictRequest):
 @app.post("/api/predict/compare", response_model=ModelCompareResponse, tags=["Prediction"])
 def compare_models(request: PredictRequest):
     """
-    Run the same symptoms through both TabNet and LightGBM DART side-by-side.
-    Useful for model comparison and research.
+    Run symptom prediction using RandomForest model.
+    Useful for model introspection and research.
     """
     le            = model_data["label_encoder"]
     symptoms_list = model_data["symptoms_list"]
@@ -379,7 +374,7 @@ def generate_pdf(response_data: PredictResponse):
         ["Confidence Score", f"{diag.confidence:.1f}%"],
         ["Severity", diag.severity.capitalize()],
         ["Body System", diag.body_system],
-        ["Model", "TabNet (attention-based tabular deep learning)"],
+        ["Model", "RandomForest (scikit-learn ensemble classifier)"],
     ]
     tbl = Table(summary_data, colWidths=[2.0 * inch, 4.75 * inch])
     tbl.setStyle(TableStyle([
@@ -407,9 +402,9 @@ def generate_pdf(response_data: PredictResponse):
 
     # ── Feature Importance ──────────────────────────────────
     if diag.feature_importance:
-        story.append(Paragraph("AI Explainability — Key Symptoms (TabNet)", h2))
+        story.append(Paragraph("AI Explainability — Key Symptoms (RandomForest)", h2))
         story.append(Paragraph(
-            "Symptoms with highest attention weight during inference:", body
+            "Symptoms with highest feature importance weight in the RandomForest model:", body
         ))
         fi_data = [["Symptom", "Contribution"]] + [
             [f.symptom, f"{f.contribution:.1f}%"] for f in diag.feature_importance

@@ -122,7 +122,7 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
   const sevColor = SEV_COLORS[diag.severity.toLowerCase()] || GRAY;
   kvRow('Severity', diag.severity.charAt(0).toUpperCase() + diag.severity.slice(1), sevColor);
   kvRow('Body System', diag.body_system);
-  kvRow('Model', 'TabNet (attention-based tabular deep learning)');
+  kvRow('Model', 'RandomForest (scikit-learn ensemble classifier)');
 
   y += 16;
 
@@ -137,8 +137,8 @@ export async function downloadDiagnosisPdf(data: PredictResponse) {
   // FEATURE IMPORTANCE
   // ════════════════════════════════════════════════════════════
   if (diag.feature_importance && diag.feature_importance.length > 0) {
-    sectionHeading('AI Explainability — Key Symptoms (TabNet)');
-    paragraph('Symptoms with highest attention weight during inference:', 9, GRAY);
+    sectionHeading('AI Explainability — Key Symptoms (RandomForest)');
+    paragraph('Symptoms with highest feature importance weight in the RandomForest model:', 9, GRAY);
     y += 2;
     // Table header
     checkPage(18);
