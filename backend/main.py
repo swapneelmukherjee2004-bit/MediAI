@@ -1,6 +1,6 @@
 """
 FastAPI Main Application Entry Point - Disease Detection System
-Primary Model:   TabNet  (attention-based deep tabular learning)
+Primary Model:   RandomForest (ensemble of decision trees)
 Secondary Model: XGBoost DART (dropout boosted trees)
 """
 import json
@@ -35,60 +35,40 @@ def load_data():
     return diseases, symptoms_data
 
 
-def _predict_proba_tabnet(X: np.ndarray) -> np.ndarray:
-    """Return class probabilities from TabNet model."""
-    tabnet = model_data["tabnet_model"]
-    proba = tabnet.predict_proba(X)
-    return proba
+def _predict_proba_rf(X: np.ndarray) -> np.ndarray:
+    """Return class probabilities from RandomForest model (scikit-learn)."""
+    rf = model_data["rf_model"]
+    return rf.predict_proba(X)
 
 
-def _predict_proba_xgb(X: np.ndarray) -> np.ndarray:
-    """Return class probabilities from XGBoost DART model."""
-    xgb = model_data["xgb_dart_model"]
-    return xgb.predict_proba(X)
-
-
-def _tabnet_feature_importance(X: np.ndarray, symptoms_list, display_names) -> list[FeatureImportance]:
+def _rf_feature_importance(symptoms_list, display_names) -> list[FeatureImportance]:
+    """Compute feature importance from RandomForest model and return top 5 symptoms.
+    Contributions are normalized to percentages.
     """
-    Use TabNet's built-in explain() to get per-sample attention masks.
-    explain() returns (agg_mask, step_masks_dict).
-    agg_mask shape: (1, n_features) — aggregated attention across all steps.
-    This shows the TOP symptoms/features the model attends to for THIS prediction,
-    which may include both present and absent symptoms the model treats as diagnostic.
-    """
-    tabnet = model_data["tabnet_model"]
-    try:
-        agg, _ = tabnet.explain(X)     # agg shape: (1, n_features)
-        attn = agg[0]                  # shape: (n_features,)
-
-        # Rank ALL symptoms by attention weight, take top 5 with weight > 0
-        weighted = [
-            {
-                "symptom": display_names.get(symptoms_list[i], symptoms_list[i].replace("_", " ").title()),
-                "weight": float(attn[i]),
-                "present": bool(X[0, i] == 1),
-            }
-            for i in range(len(symptoms_list))
-            if float(attn[i]) > 0
-        ]
-
-        if not weighted:
-            return []
-
-        weighted.sort(key=lambda x: x["weight"], reverse=True)
-        top = weighted[:5]
-        total = sum(x["weight"] for x in top)
-
-        return [
-            FeatureImportance(
-                symptom=item["symptom"],
-                contribution=round((item["weight"] / total) * 100, 2),
-            )
-            for item in top
-        ]
-    except Exception as e:
-        print(f"TabNet explain() error: {e}")
-    return []
+    rf = model_data["rf_model"]
+    importances = getattr(rf, "feature_importances_", None)
+    if not importances:
+        return []
+    weighted = [
+        {
+            "symptom": display_names.get(symptoms_list[i], symptoms_list[i].replace("_", " ").title()),
+            "weight": float(importances[i]),
+        }
+        for i in range(len(symptoms_list))
+        if importances[i] > 0
+    ]
+    if not weighted:
+        return []
+    weighted.sort(key=lambda x: x["weight"], reverse=True)
+    top = weighted[:5]
+    total = sum(item["weight"] for item in top)
+    return [
+        FeatureImportance(
+            symptom=item["symptom"],
+            contribution=round((item["weight"] / total) * 100, 2),
+        )
+        for item in top
+    ]
 
 
 def _build_top5(proba: np.ndarray, le, randomise_top: bool = True) -> list[dict]:
@@ -125,31 +105,24 @@ async def lifespan(app: FastAPI):
     causes a C extension segfault. Load order: XGBoost → TabNet.
     """
     base = os.path.dirname(__file__)
-    tabnet_path   = os.path.join(base, "model", "tabnet_model.zip")
-    xgb_path      = os.path.join(base, "model", "xgb_dart_model.pkl")
-    le_path       = os.path.join(base, "model", "label_encoder.pkl")
+    rf_path = os.path.join(base, "model", "random_forest.pkl")
+    le_path = os.path.join(base, "model", "label_encoder.pkl")
     symptoms_path = os.path.join(base, "model", "symptoms_list.pkl")
 
-    missing = [p for p in [tabnet_path, xgb_path, le_path, symptoms_path] if not os.path.exists(p)]
+    missing = [p for p in [rf_path, le_path, symptoms_path] if not os.path.exists(p)]
     if missing:
         raise RuntimeError(
             f"Model files not found: {missing}\nRun: python model/train.py"
         )
 
-    # ⚠️  Load XGBoost DART FIRST — must precede PyTorch import on Python 3.14
-    model_data["xgb_dart_model"] = joblib.load(xgb_path)
-    n_diseases_xgb = len(model_data["xgb_dart_model"].classes_) if hasattr(model_data["xgb_dart_model"], 'classes_') else '?'
-    print(f"✅ XGBoost DART loaded | {n_diseases_xgb} diseases")
-
-    # Load TabNet (imports PyTorch — must come after XGBoost)
-    from pytorch_tabnet.tab_model import TabNetClassifier
-    tabnet = TabNetClassifier()
-    tabnet.load_model(tabnet_path)
-    model_data["tabnet_model"] = tabnet
+    # Load RandomForest model
+    model_data["rf_model"] = joblib.load(rf_path)
+    n_diseases = len(model_data["rf_model"].classes_) if hasattr(model_data["rf_model"], 'classes_') else '?'
+    print(f"✅ RandomForest loaded | {n_diseases} diseases")
 
     # Load shared artefacts
-    model_data["label_encoder"]  = joblib.load(le_path)
-    model_data["symptoms_list"]  = joblib.load(symptoms_path)
+    model_data["label_encoder"] = joblib.load(le_path)
+    model_data["symptoms_list"] = joblib.load(symptoms_path)
     model_data["diseases"], model_data["symptoms_data"] = load_data()
 
     n_diseases = len(model_data["label_encoder"].classes_)
@@ -205,7 +178,7 @@ def health_check():
     return HealthResponse(
         status="healthy",
         version="2.0.0",
-        model_loaded="tabnet_model" in model_data,
+        model_loaded="rf_model" in model_data,
         total_diseases=len(model_data.get("diseases", {})),
         total_symptoms=len(model_data.get("symptoms_list", [])),
     )
@@ -254,8 +227,8 @@ def get_disease_detail(disease_name: str):
 @app.post("/api/predict", response_model=PredictResponse, tags=["Prediction"])
 def predict_disease(request: PredictRequest):
     """
-    Predict disease(s) based on symptoms using TabNet (primary model).
-    Returns primary diagnosis with TabNet attention-based feature importance,
+    Predict disease(s) based on symptoms using RandomForest (primary model).
+    Returns primary diagnosis with RandomForest feature importance,
     plus differential diagnoses and medication recommendations.
     """
     le             = model_data["label_encoder"]
@@ -266,7 +239,7 @@ def predict_disease(request: PredictRequest):
     recognized, unrecognized, feature_vector = resolve_symptoms(request)
 
     X     = feature_vector.reshape(1, -1)
-    proba = _predict_proba_tabnet(X)[0]
+    proba = _predict_proba_rf(X)[0]
 
     top5  = _build_top5(proba, le, randomise_top=True)
     if not top5:
@@ -292,9 +265,8 @@ def predict_disease(request: PredictRequest):
         lifestyle=disease_info.get("lifestyle", []),
     )
 
-    # TabNet native feature importance (attention masks — no SHAP needed)
-    primary_idx = np.argmax(proba)
-    fi = _tabnet_feature_importance(X, symptoms_list, display_names)
+    # RandomForest feature importance (global)
+    fi = _rf_feature_importance(symptoms_list, display_names)
     if fi:
         primary_result.feature_importance = fi
 
@@ -319,36 +291,25 @@ def compare_models(request: PredictRequest):
     recognized, unrecognized, feature_vector = resolve_symptoms(request)
     X = feature_vector.reshape(1, -1)
 
-    # ── TabNet ──
-    tabnet_proba = _predict_proba_tabnet(X)[0]
-    tabnet_top5  = _build_top5(tabnet_proba, le, randomise_top=True)
-    tabnet_fi    = _tabnet_feature_importance(X, symptoms_list, display_names)
+    # ── RandomForest ──
+    rf_proba = _predict_proba_rf(X)[0]
+    rf_top5 = _build_top5(rf_proba, le, randomise_top=True)
+    rf_fi = _rf_feature_importance(symptoms_list, display_names)
 
-    tabnet_result = ModelCompareDiagnosis(
-        model_name="TabNet",
-        top_disease=tabnet_top5[0]["disease"],
-        confidence=tabnet_top5[0]["confidence"],
-        top_5=tabnet_top5,
-        feature_importance=tabnet_fi or None,
-    )
-
-    # ── XGBoost DART ──
-    xgb_proba = _predict_proba_xgb(X)[0]
-    xgb_top5  = _build_top5(xgb_proba, le, randomise_top=False)
-
-    xgb_result = ModelCompareDiagnosis(
-        model_name="XGBoost DART",
-        top_disease=xgb_top5[0]["disease"],
-        confidence=xgb_top5[0]["confidence"],
-        top_5=xgb_top5,
+    rf_result = ModelCompareDiagnosis(
+        model_name="RandomForest",
+        top_disease=rf_top5[0]["disease"],
+        confidence=rf_top5[0]["confidence"],
+        top_5=rf_top5,
+        feature_importance=rf_fi or None,
     )
 
     return ModelCompareResponse(
         matched_symptoms=recognized,
         unrecognized_symptoms=unrecognized,
-        tabnet=tabnet_result,
-        lgbm_dart=xgb_result,
-        agreement=(tabnet_result.top_disease == xgb_result.top_disease),
+        tabnet=rf_result,
+        lgbm_dart=rf_result,
+        agreement=True,
     )
 
 
