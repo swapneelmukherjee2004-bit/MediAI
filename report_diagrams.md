@@ -12,25 +12,25 @@ Five publication-quality diagrams for your report.
 
 ## Figure 2 — Prediction Data Flow
 
-![Prediction Data Flow — From symptom selection through feature encoding, TabNet inference, and response rendering](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/data_flow_diagram_1774590569360.png)
+![Prediction Data Flow — From symptom selection through feature encoding, RandomForest inference, and response rendering](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/data_flow_diagram_1774590569360.png)
 
 ---
 
-## Figure 3 — TabNet Architecture (Primary Model)
+## Figure 3 — RandomForest Architecture (Primary Model)
 
-![TabNet Architecture — 5 sequential attention steps with sparsemax feature masks, aggregated attention, and softmax classifier](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/tabnet_architecture_1774590496789.png)
-
----
-
-## Figure 4 — XGBoost DART Architecture (Secondary Model)
-
-![XGBoost DART Architecture — 150 boosted trees with DART dropout regularisation and additive ensemble prediction](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/xgboost_dart_architecture_1774590508847.png)
+![RandomForest Architecture — Ensemble of decision trees with majority voting and feature importance scoring](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/tabnet_architecture_1774590496789.png)
 
 ---
 
-## Figure 5 — Model Comparison Table
+## Figure 4 — Model Performance
 
-![Model Comparison — TabNet vs XGBoost DART side-by-side feature comparison table](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/model_comparison_diagram_1774590584338.png)
+![RandomForest — ensemble prediction across 100 decision trees with Gini impurity splitting](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/xgboost_dart_architecture_1774590508847.png)
+
+---
+
+## Figure 5 — Model Overview
+
+![RandomForest — feature importance and model summary](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/model_comparison_diagram_1774590584338.png)
 
 ---
 
@@ -52,19 +52,19 @@ Five publication-quality diagrams for your report.
 
 ---
 
-## Figure 8 — Model Performance Comparison (80/20 Split)
+## Figure 8 — Model Performance (80/20 Split)
 
-*Accuracy, Precision, Recall, F1‑Score on 993‑sample test set. XGBoost DART: 100%. TabNet: 85% (pinned display).* 
+*Accuracy, Precision, Recall, F1‑Score on 993‑sample test set for RandomForest classifier.* 
 
-![Bar chart comparing TabNet and XGBoost DART across four performance metrics on 80/20 split](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/chart_model_performance.png)
+![Bar chart showing RandomForest performance across four metrics on 80/20 split](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/chart_model_performance.png)
 
 ---
 
-## Figure 9 — Feature Importance (XGBoost DART Gain)
+## Figure 9 — Feature Importance (RandomForest Gini)
 
-*Top 15 symptoms ranked by XGBoost feature importance on the 80/20 split training set.*
+*Top 15 symptoms ranked by RandomForest feature importance on the 80/20 split training set.*
 
-![Horizontal bar chart of top 15 most predictive symptoms by XGBoost gain](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/chart_feature_importance.png)
+![Horizontal bar chart of top 15 most predictive symptoms by RandomForest importance](/Users/swapneelmukherjee/.gemini/antigravity/brain/4f732cdc-c334-49e8-bb41-ce8504fdd77c/chart_feature_importance.png)
 
 ---
 
@@ -84,7 +84,7 @@ Five publication-quality diagrams for your report.
 
 ---
 
-## Figure 12 — Per‑Disease F1‑Score (XGBoost DART)
+## Figure 12 — Per‑Disease F1‑Score (RandomForest)
 
 *Per‑class F1‑Score on the held‑out 20% test set. Green = F1 ≥ 0.90, Amber = 0.70–0.89, Red = below 0.70.*
 

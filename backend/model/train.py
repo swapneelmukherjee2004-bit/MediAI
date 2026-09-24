@@ -1,24 +1,15 @@
 """
 Disease Prediction ML Model Training Script
-Primary Model:   TabNet  (pytorch-tabnet) — attention-based deep learning for tabular data
-Secondary Model: XGBoost DART — gradient boosting with dropout regularisation
+Primary Model: RandomForest (scikit-learn) — ensemble of decision trees
 """
-import json
 import os
-import sys
-import subprocess
 import numpy as np
 import pandas as pd
 import joblib
 from sklearn.preprocessing import LabelEncoder
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
-
-# ────────────────────────────────────────────────────────────────
-# NOTE: XGBoost DART is trained in a *separate subprocess* via
-# train_xgb.py to avoid a Python 3.14 runtime conflict between
-# PyTorch (TabNet) and XGBoost C extensions in the same process.
-# ────────────────────────────────────────────────────────────────
 
 # ──────────────────────────────────────────────
 # Data Loading
@@ -58,53 +49,27 @@ def load_kaggle_data():
 
 
 # ──────────────────────────────────────────────
-# TabNet Training
+# RandomForest Training
 # ──────────────────────────────────────────────
 
-def train_tabnet(X_train, y_train, X_test, y_test, model_dir):
-    from pytorch_tabnet.tab_model import TabNetClassifier
-
-    print("\n🔵 Training TabNet Classifier (primary model)...")
-    tabnet = TabNetClassifier(
-        n_d=32,                  # width of decision step embedding
-        n_a=32,                  # width of attention embedding
-        n_steps=5,               # number of sequential attention steps
-        gamma=1.5,               # coefficient for feature reuse
-        momentum=0.02,
-        mask_type="sparsemax",   # sparse attention → interpretable feature masks
-        optimizer_fn=__import__("torch").optim.Adam,
-        optimizer_params={"lr": 2e-2},
-        scheduler_params={"step_size": 50, "gamma": 0.9},
-        scheduler_fn=__import__("torch").optim.lr_scheduler.StepLR,
-        verbose=10,
-        seed=42,
+def train_random_forest(X_train, y_train, X_test, y_test, model_dir):
+    print("\n🔵 Training RandomForest Classifier (primary model)...")
+    rf = RandomForestClassifier(
+        n_estimators=100,
+        random_state=42,
+        n_jobs=-1,
     )
+    rf.fit(X_train, y_train)
 
-    tabnet.fit(
-        X_train, y_train,
-        eval_set=[(X_test, y_test)],
-        eval_name=["test"],
-        eval_metric=["accuracy"],
-        max_epochs=200,
-        patience=30,             # early stopping
-        batch_size=256,
-        virtual_batch_size=128,
-        num_workers=0,
-        drop_last=False,
-    )
-
-    preds = tabnet.predict(X_test)
+    preds = rf.predict(X_test)
     acc   = accuracy_score(y_test, preds)
-    print(f"\n✅ TabNet Test Accuracy: {acc:.4f} ({acc * 100:.2f}%)")
+    print(f"\n✅ RandomForest Test Accuracy: {acc:.4f} ({acc * 100:.2f}%)")
 
-    # TabNet saves as a zip bundle
-    save_path = os.path.join(model_dir, "tabnet_model")
-    tabnet.save_model(save_path)   # creates tabnet_model.zip
-    print(f"✅ TabNet model saved → {save_path}.zip")
+    save_path = os.path.join(model_dir, "random_forest.pkl")
+    joblib.dump(rf, save_path)
+    print(f"✅ RandomForest model saved → {save_path}")
 
-    return tabnet, acc, preds
-
-
+    return rf, acc, preds
 
 
 def train_model():
@@ -134,50 +99,29 @@ def train_model():
     model_dir = os.path.dirname(__file__)
     os.makedirs(model_dir, exist_ok=True)
 
-    # ── Train both models ──
-    tabnet_model, tabnet_acc, tabnet_preds = train_tabnet(
+    # ── Train RandomForest ──
+    rf_model, rf_acc, rf_preds = train_random_forest(
         X_train, y_train, X_test, y_test, model_dir
     )
 
-    # XGBoost DART — runs in its own subprocess to avoid PyTorch runtime conflict
-    print("\n🟢 Launching XGBoost DART training subprocess...")
-    xgb_script = os.path.join(model_dir, "train_xgb.py")
-    result = subprocess.run(
-        [sys.executable, xgb_script],
-        capture_output=False,
-        text=True,
-    )
-    if result.returncode != 0:
-        print("❌ XGBoost DART training subprocess failed.")
-        xgb_acc = 0.0
-    else:
-        acc_file = os.path.join(model_dir, "_xgb_acc.json")
-        if os.path.exists(acc_file):
-            with open(acc_file) as f:
-                xgb_acc = json.load(f)["accuracy"]
-            os.remove(acc_file)
-        else:
-            xgb_acc = 0.0
-
-    # ── Comparison table ──
+    # ── Summary ──
     print("\n" + "=" * 60)
-    print("  MODEL COMPARISON SUMMARY")
+    print("  MODEL SUMMARY")
     print("=" * 60)
     print(f"  {'Model':<25} {'Accuracy':>10}")
     print(f"  {'-'*35}")
-    print(f"  {'TabNet (primary)':<25} {tabnet_acc * 100:>9.2f}%")
-    print(f"  {'XGBoost DART (secondary)':<25} {xgb_acc * 100:>9.2f}%")
+    print(f"  {'RandomForest (primary)':<25} {rf_acc * 100:>9.2f}%")
     print("=" * 60)
 
-    print("\n📋 TabNet Classification Report (Test Data):")
-    print(classification_report(y_test, tabnet_preds, target_names=le.classes_))
+    print("\n📋 RandomForest Classification Report (Test Data):")
+    print(classification_report(y_test, rf_preds, target_names=le.classes_))
 
     # ── Save shared artefacts ──
     joblib.dump(le, os.path.join(model_dir, "label_encoder.pkl"))
     joblib.dump(symptoms_list, os.path.join(model_dir, "symptoms_list.pkl"))
     print("\n✅ label_encoder.pkl and symptoms_list.pkl saved.")
 
-    return tabnet_model, le
+    return rf_model, le
 
 
 if __name__ == "__main__":
